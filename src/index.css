@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gradient-start: theme('colors.primary');
+  --gradient-end: theme('colors.secondary');
+}
+
+body {
+  @apply bg-base-100 text-neutral font-sans antialiased;
+  overflow-x: hidden;
+}
+
+/* Custom Animation Classes */
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
+  background-size: 200% auto;
+  animation: textShine 4s ease-in-out infinite alternate;
+}
+
+@keyframes textShine {
+  0% {
+    background-position: 0% center;
+  }
+
+  100% {
+    background-position: 100% center;
+  }
+}
+
+.animated-border {
+  position: relative;
+}
+
+.animated-border::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+  transition: width 0.3s ease-in-out;
+}
+
+.animated-border:hover::after {
+  width: 100%;
+}
+
+.bg-gradient-animate {
+  @apply bg-gradient-to-r from-primary to-secondary animate-gradient-x;
+}
+
+@layer components {
+  .container-custom {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn-primary-gradient {
+    @apply relative overflow-hidden bg-primary text-white py-2 px-4 rounded-md shadow-md transition-all duration-300;
+  }
+
+  .btn-primary-gradient::before {
+    content: '';
+    @apply absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary to-secondary opacity-0 transition-opacity duration-300;
+    z-index: -1;
+  }
+
+  .btn-primary-gradient:hover::before {
+    @apply opacity-100;
+  }
+
+  .section {
+    @apply py-16 md:py-24;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold mb-12 text-center;
+  }
+}

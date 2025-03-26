@@ -1,0 +1,41 @@
+{
+  "name": "arthur-geron-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production bun rspack build",
+    "check": "biome check --write",
+    "dev": "cross-env NODE_ENV=development bun rspack serve",
+    "format": "biome format --write"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@rspack/cli": "^1.2.8",
+    "@rspack/core": "^1.2.8",
+    "@tailwindcss/nesting": "^0.0.0-insiders.565cd3e",
+    "@types/bun": "latest",
+    "autoprefixer": "^10.4.21",
+    "babel-loader": "^10.0.0",
+    "babel-preset-solid": "^1.9.5",
+    "cross-env": "^7.0.3",
+    "daisyui": "^5.0.9",
+    "postcss": "^8.5.3",
+    "postcss-loader": "^8.1.1",
+    "solid-refresh": "^0.7.5",
+    "tailwindcss": "^4.0.17",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  },
+  "peerDependencies": {
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "@motionone/solid": "^10.16.4",
+    "@solidjs/router": "^0.15.3",
+    "@tanstack/solid-query": "^5.69.0",
+    "gsap": "^3.12.7",
+    "solid-js": "^1.9.5",
+    "split-type": "^0.3.4"
+  }
+}
