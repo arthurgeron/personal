@@ -1,15 +1,74 @@
-# personal
+# Arthur Geron Portfolio Website
 
-To install dependencies:
+A modern, animated personal portfolio website built with SolidJS, Rspack, and Bun.
+
+## Features
+
+- Modern design with subtle animations
+- Interactive particle background
+- Dark/light mode support
+- Responsive for all devices
+- Fast performance with SolidJS
+- Optimized builds with Rspack
+
+## Technologies Used
+
+- SolidJS
+- Rspack
+- Bun
+- TypeScript
+- TailwindCSS
+- DaisyUI
+- GSAP for animations
+- Motion One
+
+## Development
+
+### Setup
 
 ```bash
+# Install dependencies
 bun install
+
+# Start development server
+bun run dev
 ```
 
-To run:
+### Building
 
 ```bash
-bun run index.ts
+# Build for production
+bun run build
 ```
 
-This project was created using `bun init` in bun v1.2.5. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+### Linting & Formatting
+
+```bash
+# Check code
+bun run check
+
+# Format code
+bun run format
+```
+
+## Project Structure
+
+```
+src/
+├── components/             # Reusable components
+│   ├── layout/             # Layout components
+│   ├── home/               # Home page components
+│   ├── shared/             # Shared components
+│   └── portfolio/          # Portfolio components
+├── pages/                  # Page components
+├── assets/                 # Static assets
+├── utils/                  # Utility functions
+├── data/                   # Data files
+├── App.tsx                 # Main app component
+├── index.tsx               # Entry point
+└── index.css               # Global styles
+```
+
+## License
+
+This project is licensed under the MIT License.
