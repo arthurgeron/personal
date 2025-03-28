@@ -19,6 +19,11 @@ body {
   animation: textShine 4s ease-in-out infinite alternate;
 }
 
+/* Make text-neutral-content more visible in dark mode */
+.dark .text-neutral-content {
+  @apply text-gray-300;
+}
+
 @keyframes textShine {
   0% {
     background-position: 0% center;

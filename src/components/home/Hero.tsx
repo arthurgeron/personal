@@ -2,9 +2,18 @@ import { A } from '@solidjs/router';
 import { onCleanup, onMount } from 'solid-js';
 import SocialLinks from '../shared/SocialLinks';
 
+interface Particle {
+  x: number;
+  y: number;
+  size: number;
+  speedX: number;
+  speedY: number;
+  opacity: number;
+}
+
 export default function Hero() {
-  let canvasRef;
-  let animationFrame;
+  let canvasRef: HTMLCanvasElement | undefined;
+  let animationFrame: number | undefined;
 
   onMount(() => {
     if (!canvasRef) return;
@@ -14,8 +23,9 @@ export default function Hero() {
 
     // Configure canvas
     const resizeCanvas = () => {
-      canvasRef!.width = window.innerWidth;
-      canvasRef!.height = window.innerHeight;
+      if (!canvasRef) return;
+      canvasRef.width = window.innerWidth;
+      canvasRef.height = window.innerHeight;
     };
 
     resizeCanvas();
@@ -27,8 +37,8 @@ export default function Hero() {
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
-        x: Math.random() * canvasRef!.width,
-        y: Math.random() * canvasRef!.height,
+        x: Math.random() * canvasRef.width,
+        y: Math.random() * canvasRef.height,
         size: Math.random() * 3 + 1,
         speedX: (Math.random() - 0.5) * 0.5,
         speedY: (Math.random() - 0.5) * 0.5,
@@ -43,32 +53,35 @@ export default function Hero() {
       const distance = Math.sqrt(dx * dx + dy * dy);
 
       if (distance < 150) {
-        ctx!.beginPath();
-        ctx!.strokeStyle = `rgba(16, 185, 129, ${0.15 * (1 - distance / 150)})`;
-        ctx!.lineWidth = 0.5;
-        ctx!.moveTo(p1.x, p1.y);
-        ctx!.lineTo(p2.x, p2.y);
-        ctx!.stroke();
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(16, 185, 129, ${0.15 * (1 - distance / 150)})`;
+        ctx.lineWidth = 0.5;
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
       }
     };
 
     // Animation loop
     const animate = () => {
-      ctx!.clearRect(0, 0, canvasRef!.width, canvasRef!.height);
+      ctx.clearRect(0, 0, canvasRef.width, canvasRef.height);
 
+      // Update and draw particles
       particles.forEach((particle, index) => {
         particle.x += particle.speedX;
         particle.y += particle.speedY;
 
-        if (particle.x > canvasRef!.width) particle.x = 0;
-        if (particle.x < 0) particle.x = canvasRef!.width;
-        if (particle.y > canvasRef!.height) particle.y = 0;
-        if (particle.y < 0) particle.y = canvasRef!.height;
+        // Wrap particles around screen edges
+        if (particle.x > canvasRef.width) particle.x = 0;
+        if (particle.x < 0) particle.x = canvasRef.width;
+        if (particle.y > canvasRef.height) particle.y = 0;
+        if (particle.y < 0) particle.y = canvasRef.height;
 
-        ctx!.beginPath();
-        ctx!.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx!.fillStyle = `rgba(16, 185, 129, ${particle.opacity})`;
-        ctx!.fill();
+        // Draw particle
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(16, 185, 129, ${particle.opacity})`;
+        ctx.fill();
 
         // Connect particles with lines
         for (let j = index + 1; j < particles.length; j++) {
@@ -76,13 +89,18 @@ export default function Hero() {
         }
       });
 
+      // Make sure animation keeps running continuously
       animationFrame = requestAnimationFrame(animate);
     };
 
+    // Start the animation
     animate();
 
+    // Ensure proper cleanup
     onCleanup(() => {
-      cancelAnimationFrame(animationFrame);
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
       window.removeEventListener('resize', resizeCanvas);
     });
   });

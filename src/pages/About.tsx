@@ -12,7 +12,7 @@ export default function About() {
 
     const sections = containerRef.querySelectorAll('.animate-section');
 
-    sections.forEach((section) => {
+    for (const section of Array.from(sections)) {
       gsap.fromTo(
         section,
         { y: 50, opacity: 0 },
@@ -22,11 +22,11 @@ export default function About() {
           duration: 0.8,
           scrollTrigger: {
             trigger: section,
-            start: 'top 70%',
+            start: 'top 90%',
           },
         },
       );
-    });
+    };
   });
 
   return (

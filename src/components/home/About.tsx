@@ -4,9 +4,9 @@ import { onMount } from 'solid-js';
 import SplitType from 'split-type';
 
 export default function About() {
-  let titleRef;
-  let textRef;
-  let containerRef;
+  let titleRef: HTMLHeadingElement | undefined;
+  let textRef: HTMLDivElement | undefined;
+  let containerRef: HTMLElement | undefined;
 
   onMount(() => {
     if (!titleRef || !textRef || !containerRef) return;
@@ -26,7 +26,7 @@ export default function About() {
         ease: 'power2.out',
         scrollTrigger: {
           trigger: containerRef,
-          start: 'top 80%',
+          start: 'top bottom',
         },
       },
     );
@@ -42,7 +42,7 @@ export default function About() {
         ease: 'power2.out',
         scrollTrigger: {
           trigger: containerRef,
-          start: 'top 70%',
+          start: 'top bottom-=100px',
         },
       },
     );

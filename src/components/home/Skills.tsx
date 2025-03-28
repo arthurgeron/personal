@@ -30,7 +30,7 @@ export default function Skills() {
     const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef,
-        start: 'top 70%',
+        start: 'top bottom',
       },
     });
 
