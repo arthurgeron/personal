@@ -1,6 +1,7 @@
 import { A } from '@solidjs/router';
 import { createSignal, onCleanup, onMount } from 'solid-js';
 import SocialLinks from '../shared/SocialLinks';
+import { isDarkMode } from '../../utils/theme';
 
 interface Particle {
   x: number;
@@ -26,6 +27,26 @@ export default function Hero() {
 
     const ctx = canvasRef.getContext('2d');
     if (!ctx) return;
+
+    // Function to get appropriate colors based on theme
+    const getThemeColors = () => {
+      return isDarkMode() 
+        ? { particle: 'rgba(255, 255, 255, $opacity)', connection: 'rgba(255, 255, 255, $opacity)' }
+        : { particle: 'rgba(16, 185, 129, $opacity)', connection: 'rgba(16, 185, 129, $opacity)' };
+    };
+
+    // Theme change observer
+    const themeObserver = new MutationObserver(() => {
+      // Force redraw on theme change
+      if (canvasRef && ctx) {
+        ctx.clearRect(0, 0, canvasRef.width, canvasRef.height);
+      }
+    });
+    
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
 
     // Detect if we should throttle animation based on device
     const isMobile = window.innerWidth < 768;
@@ -128,8 +149,12 @@ export default function Hero() {
       const distance = Math.sqrt(dx * dx + dy * dy);
 
       if (distance < connectionDistance) {
+        const colors = getThemeColors();
+        const opacity = 0.15 * (1 - distance / connectionDistance);
+        const connectionColor = colors.connection.replace('$opacity', opacity.toString());
+        
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(16, 185, 129, ${0.15 * (1 - distance / connectionDistance)})`;
+        ctx.strokeStyle = connectionColor;
         ctx.lineWidth = 0.5;
         ctx.moveTo(p1.x, p1.y);
         ctx.lineTo(p2.x, p2.y);
@@ -196,9 +221,12 @@ export default function Hero() {
       // Draw particles and connections
       for (const particle of particles) {
         // Draw particle
+        const colors = getThemeColors();
+        const particleColor = colors.particle.replace('$opacity', particle.opacity.toString());
+        
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(16, 185, 129, ${particle.opacity})`;
+        ctx.fillStyle = particleColor;
         ctx.fill();
 
         // Get neighboring particles and draw connections
@@ -226,6 +254,7 @@ export default function Hero() {
       }
       window.removeEventListener('resize', resizeCanvas);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+      themeObserver.disconnect();
     });
   });
 
