@@ -1,5 +1,3 @@
-/// <reference types="vite/client" />
-
 import { A } from '@solidjs/router';
 import { createSignal, onCleanup, onMount } from 'solid-js';
 import SocialLinks from '../shared/SocialLinks';
@@ -14,12 +12,6 @@ interface Particle {
   gridX?: number;
   gridY?: number;
 }
-
-// Helper function for development logs only
-const isDev = () => process.env.NODE_ENV === 'development';
-const devLog = (...args: unknown[]): void => {
-  if (isDev()) console.log(...args);
-};
 
 export default function Hero() {
   let canvasRef: HTMLCanvasElement | undefined;
@@ -43,7 +35,12 @@ export default function Hero() {
     // Configure canvas
     const resizeCanvas = () => {
       if (!canvasRef) return;
-      devLog('Resizing canvas', window.innerWidth, window.innerHeight);
+      // Store current state if context exists
+      // const currentParticles = [...particles];
+
+      // Set dimensions based on viewport
+      const prevWidth = canvasRef.width;
+      const prevHeight = canvasRef.height;
       canvasRef.width = window.innerWidth;
       canvasRef.height = window.innerHeight;
     };
@@ -53,10 +50,9 @@ export default function Hero() {
 
     // Setup visibility tracking to properly pause/resume animation
     const handleVisibilityChange = () => {
-      devLog('Visibility change', document.hidden);
       const newIsVisible = !document.hidden;
       setIsVisible(newIsVisible);
-      
+
       // Restart animation if becoming visible again and no animation frame is active
       if (newIsVisible && !animationFrame) {
         animate();
@@ -85,14 +81,14 @@ export default function Hero() {
       for (const key of Object.keys(spatialGrid)) {
         spatialGrid[key] = [];
       }
-      
+
       // Assign particles to grid cells
       for (const particle of particles) {
         const gridX = Math.floor(particle.x / gridSize);
         const gridY = Math.floor(particle.y / gridSize);
         particle.gridX = gridX;
         particle.gridY = gridY;
-        
+
         const key = `${gridX},${gridY}`;
         if (!spatialGrid[key]) {
           spatialGrid[key] = [];
@@ -100,32 +96,33 @@ export default function Hero() {
         spatialGrid[key].push(particle);
       }
     };
-    
+
     const getNeighboringParticles = (particle: Particle): Particle[] => {
-      if (particle.gridX === undefined || particle.gridY === undefined) return [];
-      
+      if (particle.gridX === undefined || particle.gridY === undefined)
+        return [];
+
       const neighbors: Particle[] = [];
-      
+
       // Check 9 surrounding cells (including current cell)
       for (let offsetX = -1; offsetX <= 1; offsetX++) {
         for (let offsetY = -1; offsetY <= 1; offsetY++) {
           const checkX: number = particle.gridX + offsetX;
           const checkY: number = particle.gridY + offsetY;
           const key = `${checkX},${checkY}`;
-          
+
           if (spatialGrid[key]) {
             neighbors.push(...spatialGrid[key]);
           }
         }
       }
-      
+
       return neighbors;
     };
 
     // Connection lines
     const drawLines = (p1: Particle, p2: Particle) => {
       if (p1 === p2) return; // Skip self
-      
+
       const dx = p1.x - p2.x;
       const dy = p1.y - p2.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
@@ -142,32 +139,39 @@ export default function Hero() {
 
     // Animation loop
     const animate = (timestamp = 0) => {
+      // Save the original global settings
+      ctx.save();
+      // Reset critical properties that could make content invisible
+      ctx.globalAlpha = 1.0;
+      ctx.globalCompositeOperation = 'source-over';
       // Don't continue animation if component isn't visible or canvas isn't available
       if (!canvasRef || !ctx || !isVisible()) {
-
+        ctx.restore();
         // Always request next frame even if we skip this one
         animationFrame = requestAnimationFrame(animate);
         return;
       }
-      
+
       // Check if canvas dimensions are valid
       if (canvasRef.width === 0 || canvasRef.height === 0) {
         resizeCanvas();
+        ctx.restore();
         animationFrame = requestAnimationFrame(animate);
         return;
       }
-      
+
       // Ensure context is preserved between frames
-      
+
       // Throttle frame rate on mobile devices
       if (shouldThrottle && timestamp - lastFrameTime < 33) {
+        ctx.restore();
         animationFrame = requestAnimationFrame(animate);
         return;
       }
-      
+
       lastFrameTime = timestamp;
       ctx.clearRect(0, 0, canvasRef.width, canvasRef.height);
-      
+
       // Update positions
       for (const particle of particles) {
         particle.x += particle.speedX;
@@ -179,7 +183,7 @@ export default function Hero() {
         if (particle.y > canvasRef.height) particle.y = 0;
         if (particle.y < 0) particle.y = canvasRef.height;
       }
-      
+
       // Update spatial grid for optimized connections
       updateSpatialGrid();
 
@@ -190,7 +194,7 @@ export default function Hero() {
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(16, 185, 129, ${particle.opacity})`;
         ctx.fill();
-        
+
         // Get neighboring particles and draw connections
         const neighbors = getNeighboringParticles(particle);
         for (const neighbor of neighbors) {
@@ -200,9 +204,8 @@ export default function Hero() {
         }
       }
 
-
-      
       // Schedule next frame only after completing this one
+      ctx.restore();
       animationFrame = requestAnimationFrame(animate);
     };
 
@@ -211,7 +214,6 @@ export default function Hero() {
 
     // Ensure proper cleanup
     onCleanup(() => {
-      devLog('Cleaning up animation');
       if (animationFrame) {
         cancelAnimationFrame(animationFrame);
         animationFrame = undefined; // Clear the reference
@@ -223,10 +225,7 @@ export default function Hero() {
 
   return (
     <div class="relative h-screen flex items-center justify-center overflow-hidden">
-      <canvas
-        ref={canvasRef}
-        class="absolute top-0 left-0 w-full h-full -z-10"
-      />
+      <canvas ref={canvasRef} class="absolute top-0 left-0 w-full h-full z-0" />
       <div class="container mx-auto px-4 z-10">
         <div class="text-center">
           <h1 class="text-5xl md:text-7xl font-bold mb-4 text-gradient">
