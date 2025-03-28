@@ -1,0 +1,72 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Project Structure: Arthur Geron's Portfolio
+
+## Current Directory Structure
+```
+arthur-geron-portfolio/
+├── src/
+│   ├── components/             # Reusable UI components
+│   │   ├── layout/             # Layout structure components
+│   │   │   ├── Layout.tsx      # Main layout wrapper
+│   │   │   ├── Header.tsx      # Site header with navigation
+│   │   │   └── Footer.tsx      # Site footer
+│   │   ├── home/               # Home page specific components
+│   │   │   ├── Hero.tsx        # Hero section with particle background
+│   │   │   ├── About.tsx       # About section on home page
+│   │   │   ├── Skills.tsx      # Skills showcase section
+│   │   │   └── Projects.tsx    # Featured projects section
+│   │   ├── shared/             # Shared components used across pages
+│   │   │   ├── SocialLinks.tsx # Social media links component
+│   │   │   └── ThemeToggle.tsx # Dark/light theme switcher
+│   │   └── portfolio/          # Portfolio-related components (may be empty currently)
+│   ├── pages/                  # Top-level page components
+│   │   ├── Home.tsx            # Homepage combining multiple sections
+│   │   ├── About.tsx           # Detailed about page
+│   │   ├── Projects.tsx        # Projects showcase page
+│   │   ├── Contact.tsx         # Contact form page
+│   │   └── NotFound.tsx        # 404 error page
+│   ├── assets/                 # Static assets
+│   │   └── (images, icons)
+│   ├── data/                   # Data files (may be empty/planned)
+│   ├── utils/                  # Utility functions (may be empty/planned) 
+│   ├── App.tsx                 # Main application component with routing
+│   ├── index.tsx               # Application entry point
+│   ├── index.css               # Global styles and Tailwind imports
+│   └── types.d.ts              # TypeScript type declarations
+├── public/                     # Static files served directly
+├── dist/                       # Build output directory
+├── node_modules/               # Dependencies
+├── index.html                  # HTML template
+├── package.json                # Dependencies and scripts
+├── tsconfig.json               # TypeScript configuration
+├── rspack.config.ts            # Bundler configuration
+├── postcss.config.js           # PostCSS configuration
+├── tailwind.config.js          # TailwindCSS theme configuration
+├── biome.json                  # Linting/formatting configuration
+├── .babelrc                    # Babel configuration
+└── .tool-versions              # Tool versions specification
+```
+
+## Key Component Organization
+
+### Page Structure
+- Each page is a top-level component in `src/pages/`
+- Pages import and compose section components from relevant folders
+- Lazy loading is implemented for all page components in `App.tsx`
+
+### Component Hierarchy
+- `Layout`: Wrapper for all pages, includes Header and Footer
+- Section components (`Hero`, `About`, etc.): Page-specific sections
+- Shared components: Reusable across multiple sections/pages
+
+### Routing
+Defined in `App.tsx` using `@solidjs/router`:
+- `/` - Home page
+- `/about` - About page
+- `/projects` - Projects showcase
+- `/contact` - Contact form
+- `/*` - NotFound (404) page 

@@ -1,0 +1,41 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Project Overview: Arthur Geron's Personal Website
+
+## Description
+Arthur Geron's personal website is a modern, well-animated portfolio designed to showcase his skills and experience as a software engineer, focusing on his expertise in Web3, React development, and Fuel Network contributions.
+
+## Goals
+- Create a professional, visually appealing portfolio website
+- Highlight technical skills with an emphasis on Web3 & React
+- Showcase projects and experience
+- Implement smooth animations and interactive elements
+- Provide easy contact options for potential opportunities
+
+## Target Persona: Arthur Geron
+Arthur Geron is a software engineer specializing in:
+- Web3 development & blockchain technologies
+- React and React Native development
+- Fuel Network contributions
+- ESLint plugin development (notably ESLint Plugin for React useMemo)
+- Frontend architecture and performance optimization
+
+## Key Features
+- Responsive design optimized for all device sizes
+- Animated particle background on the hero section
+- Dark/light theme toggle based on user preference
+- Interactive project cards
+- Smooth page transitions and scroll animations
+- Social links to GitHub and other platforms
+- Contact form for direct communication
+
+## Implementation
+The site is built using modern web technologies with a focus on performance and clean design:
+- SolidJS for UI rendering and reactivity
+- TailwindCSS with DaisyUI for styling
+- GSAP and Motion One for animations
+- Rspack for efficient bundling
+- TypeScript for type safety 

@@ -1,0 +1,87 @@
+---
+description: Styling Guidelines
+globs: 
+alwaysApply: false
+---
+# Styling Guidelines: Arthur Geron's Portfolio
+
+## Core Styling Tools
+- **TailwindCSS:** Primary styling approach with utility classes
+- **DaisyUI:** Component library built on top of Tailwind
+- **CSS Custom Properties:** Used via Tailwind/DaisyUI themes
+
+## Color Palette
+From `tailwind.config.js`, the project uses a specific color scheme:
+
+```js
+colors: {
+  primary: "#1E40AF",    // Deep blue
+  secondary: "#10B981",  // Tech mint
+  accent: "#F59E0B",     // Blockchain orange 
+  neutral: "#1F2937",    // Dark slate
+  "base-100": "#FFFFFF", // White base
+  info: "#3ABFF8",
+  success: "#36D399",
+  warning: "#FBBD23",
+  error: "#F87272",
+}
+```
+
+## Typography
+```js
+fontFamily: {
+  sans: ["Inter", "ui-sans-serif", "system-ui"],
+  heading: ["Manrope", "ui-sans-serif", "system-ui"],
+}
+```
+
+## Theme Management
+- Dark/light theme toggle implemented in `ThemeToggle.tsx`
+- Themes controlled by `data-theme` attribute on `documentElement`
+- Theme preferences stored in `localStorage`
+- System preference detection via `prefers-color-scheme` media query
+- DaisyUI provides theme styling
+
+## Custom Animations
+Custom keyframes defined in `tailwind.config.js`:
+```js
+animation: {
+  'gradient-x': 'gradient-x 15s ease infinite',
+},
+keyframes: {
+  'gradient-x': {
+    '0%, 100%': {
+      'background-size': '200% 200%',
+      'background-position': 'left center'
+    },
+    '50%': {
+      'background-size': '200% 200%',
+      'background-position': 'right center'
+    },
+  },
+}
+```
+
+## Class Naming Conventions
+- Use standard Tailwind utility classes directly in JSX
+- Use DaisyUI component classes for UI elements (btn, card, etc.)
+- For example: `btn btn-primary btn-lg` for primary buttons
+- Use `class` attribute for static classes
+- Use `classList` with reactive expressions in SolidJS:
+  ```tsx
+  <div 
+    class="min-h-screen" 
+    classList={{ 'opacity-0': !isLoaded(), 'opacity-100 transition-opacity duration-1000': isLoaded() }}
+  >
+  ```
+
+## Responsive Design
+- Use Tailwind's responsive prefixes (sm, md, lg, xl, 2xl)
+- Mobile-first approach (default styles are for mobile)
+- Example: `text-5xl md:text-7xl` (smaller on mobile, larger on md+)
+
+## Component-Specific Styling
+- Keep styling with the component (no separate CSS files)
+- Special effects like `text-gradient` implemented through global classes
+- Consistent spacing using Tailwind's margin/padding utilities
+- Container and layout components handle overall page structure 

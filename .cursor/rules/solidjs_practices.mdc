@@ -66,3 +66,36 @@ alwaysApply: false
   gsap.registerPlugin(ScrollTrigger);
   ```
 - Cleanup animations in `onCleanup` hook to prevent memory leaks 
+
+## Router Structure and Context
+- Router components create a context that must be properly accessible to child components
+- Always properly type components that use router primitives with `ParentProps` or appropriate interfaces
+- Route components should be direct children of a Router component (already defined in index.tsx)
+- Never use `<A>` components or router hooks outside of a proper Router context
+- Example of correct Route structure:
+  ```tsx
+  // In index.tsx
+  <Router>
+    <App />
+  </Router>
+  
+  // In App.tsx (correct)
+  <Route path="/" component={Home} />
+  <Route path="/about" component={About} />
+  
+  // NOT like this (incorrect):
+  <Routes>  // <-- SolidJS Router doesn't use a Routes wrapper
+    <Route path="/" component={Home} />
+  </Routes>
+  ```
+- Ensure `Layout` components receiving children from router have proper typing:
+  ```tsx
+  // Correct typing for Layout
+  export default function Layout(props: ParentProps<{ className?: string }>) {
+    return (
+      <div>
+        {props.children} // Router-provided children
+      </div>
+    );
+  }
+  ```

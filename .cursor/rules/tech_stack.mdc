@@ -1,0 +1,40 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Tech Stack: Arthur Geron's Portfolio
+
+## Core Technologies
+- **UI Framework:** SolidJS (v1.9.5)
+- **Bundler:** Rspack (v1.2.8)
+- **Runtime & Package Manager:** Bun (v1.2.6)
+- **Language:** TypeScript (v5.8.2)
+- **Node Version:** 23.10.0 (as specified in .tool-versions)
+
+## Key Libraries & Dependencies
+- **Routing:** `@solidjs/router` (v0.15.3)
+- **Data Fetching:** `@tanstack/solid-query` (v5.69.0)
+- **Animation:**
+  - GSAP (v3.12.7) with ScrollTrigger plugin
+  - Motion One for Solid (`@motionone/solid` v10.16.4)
+  - `split-type` (v0.3.4) for text animations
+
+## Styling
+- **CSS Framework:** TailwindCSS (v3.4.1)
+- **Component Library:** DaisyUI (v5.0.9)
+- **Post-processing:** PostCSS (v8.4.35) with Autoprefixer (v10.4.21)
+
+## Development Tooling
+- **Linting & Formatting:** Biome (v1.9.4)
+- **Hot Module Replacement:** solid-refresh (v0.7.5)
+- **Environment Management:** cross-env
+- **Babel:** babel-preset-solid & babel-loader for SolidJS JSX transformation
+
+## Configuration Files
+- `rspack.config.ts` - Bundler configuration
+- `tsconfig.json` - TypeScript compiler options
+- `biome.json` - Linting and formatting rules
+- `tailwind.config.js` - Styling theme and utilities
+- `postcss.config.js` - CSS processing pipeline
+- `.babelrc` - Babel configuration for SolidJS 

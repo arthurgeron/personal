@@ -1,0 +1,86 @@
+---
+description: Animation Strategy
+globs: 
+alwaysApply: false
+---
+# Animation Strategy: Arthur Geron's Portfolio
+
+## Animation Libraries
+The project uses a combination of animation libraries:
+
+- **GSAP (GreenSock Animation Platform):** For complex animations
+  - ScrollTrigger plugin for scroll-based animations
+  - Used in components like Home.tsx
+
+- **Motion One (@motionone/solid):** For declarative animations
+  - Provides SolidJS integrations 
+
+- **Split Type:** For text animations
+  - Splits text into characters, words, or lines
+  - Often used with GSAP for text reveal effects
+
+- **CSS Animations:** Through Tailwind's animation utilities
+  - Custom animations defined in tailwind.config.js
+  - Example: `animation: { 'gradient-x': 'gradient-x 15s ease infinite' }`
+
+## Implementation Patterns
+
+### Canvas-based Particle Animation (Hero.tsx)
+- Interactive background created with HTML5 Canvas API
+- Particles move with subtle randomization
+- Connection lines drawn between nearby particles
+- Proper cleanup on component unmount:
+  ```tsx
+  onCleanup(() => {
+    cancelAnimationFrame(animationFrame);
+    window.removeEventListener('resize', resizeCanvas);
+  });
+  ```
+
+### Fade-in Animations
+Home page uses fade-in animation on initial load:
+```tsx
+const [isLoaded, setIsLoaded] = createSignal(false);
+  
+onMount(() => {
+  const timeout = setTimeout(() => setIsLoaded(true), 100);
+  onCleanup(() => clearTimeout(timeout));
+});
+
+return (
+  <div 
+    class="min-h-screen" 
+    classList={{ 'opacity-0': !isLoaded(), 'opacity-100 transition-opacity duration-1000': isLoaded() }}
+  >
+    {/* Content */}
+  </div>
+);
+```
+
+### GSAP Animation Setup
+GSAP is imported and configured at the component level:
+```tsx
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+```
+
+### CSS Transitions
+Used for subtle UI interactions like hover effects:
+```tsx
+<button 
+  onClick={toggleTheme}
+  class="p-2 rounded-full hover:bg-base-200 transition-colors duration-200"
+  aria-label={`Switch to ${theme() === 'light' ? 'dark' : 'light'} mode`}
+>
+```
+
+## Best Practices
+- Register GSAP plugins at component level
+- Always clean up animations and event listeners in `onCleanup`
+- Prefer CSS transitions for simple state changes
+- Use requestAnimationFrame for canvas animations
+- Throttle resize handlers for performance
+- Conditionally apply animation classes with `classList`
+- Use delay parameter to stagger animations where appropriate 
