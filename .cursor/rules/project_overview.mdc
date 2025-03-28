@@ -1,7 +1,7 @@
 ---
 description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 # Project Overview: Arthur Geron's Personal Website
 
@@ -39,3 +39,4 @@ The site is built using modern web technologies with a focus on performance and 
 - GSAP and Motion One for animations
 - Rspack for efficient bundling
 - TypeScript for type safety 
+- Almost never use comments, the code should speak for itself.
