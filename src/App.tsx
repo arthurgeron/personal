@@ -1,6 +1,6 @@
-import { lazy, Suspense } from 'solid-js';
 import { Route } from '@solidjs/router';
-import { ParentProps } from 'solid-js';
+import { Suspense, lazy } from 'solid-js';
+import type { ParentProps } from 'solid-js';
 import Layout from './components/layout/Layout';
 
 // Lazy load pages
@@ -14,7 +14,13 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 const Root = (props: ParentProps) => {
   return (
     <Layout>
-      <Suspense fallback={<div class="flex h-screen w-full items-center justify-center">Loading...</div>}>
+      <Suspense
+        fallback={
+          <div class="flex h-screen w-full items-center justify-center">
+            Loading...
+          </div>
+        }
+      >
         {props.children}
       </Suspense>
     </Layout>
@@ -33,4 +39,4 @@ function App() {
   );
 }
 
-export default App; 
+export default App;

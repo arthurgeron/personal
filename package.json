@@ -37,6 +37,7 @@
     "@tanstack/solid-query": "^5.69.0",
     "gsap": "^3.12.7",
     "solid-js": "^1.9.5",
+    "solid-motionone": "^1.0.3",
     "split-type": "^0.3.4"
   }
 }

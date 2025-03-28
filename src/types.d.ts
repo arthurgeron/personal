@@ -70,4 +70,4 @@ interface Particle {
   speedX: number;
   speedY: number;
   opacity: number;
-} 
+}

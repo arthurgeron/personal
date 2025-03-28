@@ -1,20 +1,20 @@
-import { onMount } from 'solid-js';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { onMount } from 'solid-js';
 import SplitType from 'split-type';
 
 export default function About() {
   let titleRef;
   let textRef;
   let containerRef;
-  
+
   onMount(() => {
     if (!titleRef || !textRef || !containerRef) return;
-    
+
     // Split the text into chars for animation
     const titleSplit = new SplitType(titleRef, { types: 'chars' });
     const textSplit = new SplitType(textRef, { types: 'lines' });
-    
+
     gsap.fromTo(
       titleSplit.chars,
       { y: 40, opacity: 0 },
@@ -28,9 +28,9 @@ export default function About() {
           trigger: containerRef,
           start: 'top 80%',
         },
-      }
+      },
     );
-    
+
     gsap.fromTo(
       textSplit.lines,
       { y: 20, opacity: 0 },
@@ -44,10 +44,10 @@ export default function About() {
           trigger: containerRef,
           start: 'top 70%',
         },
-      }
+      },
     );
   });
-  
+
   return (
     <section ref={containerRef} class="section bg-base-200 py-20">
       <div class="container-custom">
@@ -55,27 +55,30 @@ export default function About() {
           <h2 ref={titleRef} class="section-title mb-12">
             About Me
           </h2>
-          
+
           <div ref={textRef} class="prose prose-lg max-w-none">
             <p class="mb-6">
-              I'm a passionate Web3 & React Developer with expertise in building decentralized applications 
-              and modern web interfaces. As a contributor to the Fuel Network, I'm actively involved in 
+              I'm a passionate Web3 & React Developer with expertise in building
+              decentralized applications and modern web interfaces. As a
+              contributor to the Fuel Network, I'm actively involved in
               developing the next generation of blockchain technologies.
             </p>
-            
+
             <p class="mb-6">
-              My journey in software development has led me to create tools and libraries that help 
-              developers build performant and scalable applications. I believe in writing clean, 
-              maintainable code that solves real problems.
+              My journey in software development has led me to create tools and
+              libraries that help developers build performant and scalable
+              applications. I believe in writing clean, maintainable code that
+              solves real problems.
             </p>
-            
+
             <p>
-              When I'm not coding, I'm exploring new technologies, contributing to open source projects, 
-              and sharing knowledge with the developer community.
+              When I'm not coding, I'm exploring new technologies, contributing
+              to open source projects, and sharing knowledge with the developer
+              community.
             </p>
           </div>
         </div>
       </div>
     </section>
   );
-} 
+}

@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --gradient-start: #1E40AF;
-  --gradient-end: #10B981;
+  --gradient-start: #1e40af;
+  --gradient-end: #10b981;
 }
 
 body {
@@ -34,7 +34,7 @@ body {
 }
 
 .animated-border::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -2px;
   left: 0;
@@ -62,7 +62,7 @@ body {
   }
 
   .btn-primary-gradient::before {
-    content: '';
+    content: "";
     @apply absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary to-secondary opacity-0 transition-opacity duration-300;
     z-index: -1;
   }

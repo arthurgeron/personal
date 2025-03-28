@@ -12,8 +12,9 @@ The project uses a combination of animation libraries:
   - ScrollTrigger plugin for scroll-based animations
   - Used in components like Home.tsx
 
-- **Motion One (@motionone/solid):** For declarative animations
+- **Motion One (solid-motionone):** For declarative animations
   - Provides SolidJS integrations 
+  - Used for hover animations, transitions, and reactive animations
 
 - **Split Type:** For text animations
   - Splits text into characters, words, or lines
@@ -57,6 +58,21 @@ return (
 );
 ```
 
+### Motion One Animation Setup
+Motion One is used for reactive animations that respond to state changes:
+```tsx
+import { Motion } from 'solid-motionone';
+
+<Motion.div
+  animate={{
+    scale: hoveredSkill() === skill.name ? 1.05 : 1,
+  }}
+  transition={{ duration: 0.2 }}
+>
+  {skill.name}
+</Motion.div>
+```
+
 ### GSAP Animation Setup
 GSAP is imported and configured at the component level:
 ```tsx
@@ -83,4 +99,10 @@ Used for subtle UI interactions like hover effects:
 - Use requestAnimationFrame for canvas animations
 - Throttle resize handlers for performance
 - Conditionally apply animation classes with `classList`
-- Use delay parameter to stagger animations where appropriate 
+- Use delay parameter to stagger animations where appropriate
+- Use SolidJS's `<For>` component with Motion elements for lists
+- Avoid placing `key` attribute directly on Motion components 
+
+## Useful links
+- [Solid MotionOne](https://github.com/solidjs-community/solid-motionone)
+- [Motion One React Docs](https://motion.dev/docs/react-quick-start) . These are react docs because there are no official solid js docs, but it should be pretty similar.

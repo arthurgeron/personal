@@ -1,15 +1,15 @@
-import { createSignal, onMount } from 'solid-js';
 import { A } from '@solidjs/router';
+import { createSignal, onMount } from 'solid-js';
 
 export default function NotFound() {
   const [visible, setVisible] = createSignal(false);
-  
+
   onMount(() => {
     setTimeout(() => setVisible(true), 100);
   });
-  
+
   return (
-    <div 
+    <div
       class="min-h-screen flex items-center justify-center text-center"
       classList={{
         'opacity-0': !visible(),
@@ -22,12 +22,13 @@ export default function NotFound() {
         <p class="text-lg mb-8 max-w-md mx-auto">
           The page you are looking for doesn't exist or has been moved.
         </p>
-        <A 
-          href="/" 
+        <A
+          href="/"
           class="btn btn-primary"
           classList={{
             'translate-y-4 opacity-0': !visible(),
-            'translate-y-0 opacity-100 transition-all duration-700 delay-300': visible(),
+            'translate-y-0 opacity-100 transition-all duration-700 delay-300':
+              visible(),
           }}
         >
           Back to Home
@@ -35,4 +36,4 @@ export default function NotFound() {
       </div>
     </div>
   );
-} 
+}
