@@ -2,6 +2,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { For, createSignal, onMount } from 'solid-js';
 import { Motion } from 'solid-motionone';
+import { isDarkMode } from '../../utils/theme';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -52,7 +53,6 @@ export default function Skills() {
       <div class="section-divider">
         <div 
           class="section-divider-gradient" 
-
           aria-hidden="true"
         />
       </div>
@@ -67,6 +67,7 @@ export default function Skills() {
                   class="skill-item px-6 py-3 rounded-full bg-base-200 shadow-sm hover:shadow-md transition-all duration-300"
                   classList={{
                     'bg-primary text-white': hoveredSkill() === skill.name,
+                    'text-neutral-content': isDarkMode() && hoveredSkill() !== skill.name,
                   }}
                   onMouseEnter={() => setHoveredSkill(skill.name)}
                   onMouseLeave={() => setHoveredSkill(null)}

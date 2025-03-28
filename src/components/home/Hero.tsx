@@ -172,6 +172,12 @@ export default function Hero() {
       lastFrameTime = timestamp;
       ctx.clearRect(0, 0, canvasRef.width, canvasRef.height);
 
+      // Fill canvas with theme-appropriate background color
+      const themeColors = getThemeColors();
+      const bgColor = isDarkMode() ? 'rgba(13, 17, 23, 0.3)' : 'rgba(240, 253, 244, 0.3)';
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, canvasRef.width, canvasRef.height);
+
       // Update positions
       for (const particle of particles) {
         particle.x += particle.speedX;

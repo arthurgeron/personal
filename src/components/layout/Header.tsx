@@ -1,6 +1,7 @@
 import { A } from '@solidjs/router';
 import { createSignal, onCleanup, onMount } from 'solid-js';
 import ThemeToggle from '../shared/ThemeToggle';
+import { isDarkMode } from '../../utils/theme';
 
 export default function Header() {
   const [scrolled, setScrolled] = createSignal(false);
@@ -21,7 +22,8 @@ export default function Header() {
     <header
       class="fixed top-0 w-full z-50 transition-all duration-300"
       classList={{
-        'bg-base-100/90 backdrop-blur-md shadow-md': scrolled(),
+        'bg-base-100/90 backdrop-blur-md shadow-md': scrolled() && !isDarkMode(),
+        'bg-gray-900/90 backdrop-blur-md shadow-md': scrolled() && isDarkMode(),
         'bg-transparent': !scrolled(),
       }}
     >
@@ -76,22 +78,43 @@ export default function Header() {
 
       {/* Mobile Menu */}
       <div
-        class="md:hidden absolute w-full bg-base-100/95 backdrop-blur-md transition-all duration-300 overflow-hidden shadow-md"
+        class="md:hidden absolute w-full transition-all duration-300 overflow-hidden shadow-md"
+        classList={{
+          'bg-base-100/95 backdrop-blur-md': !isDarkMode(),
+          'bg-gray-900/95 backdrop-blur-md': isDarkMode(),
+        }}
         style={{
           'max-height': menuOpen() ? '300px' : '0px',
           opacity: menuOpen() ? 1 : 0,
         }}
       >
         <nav class="flex flex-col p-4 space-y-4">
-          <A href="/" class="py-2 px-4" onClick={() => setMenuOpen(false)}>
+          <A 
+            href="/" 
+            class="py-2 px-4" 
+            classList={{
+              'text-gray-300': isDarkMode(),
+            }}
+            onClick={() => setMenuOpen(false)}
+          >
             Home
           </A>
-          <A href="/about" class="py-2 px-4" onClick={() => setMenuOpen(false)}>
+          <A 
+            href="/about" 
+            class="py-2 px-4" 
+            classList={{
+              'text-gray-300': isDarkMode(),
+            }}
+            onClick={() => setMenuOpen(false)}
+          >
             About
           </A>
           <A
             href="/projects"
             class="py-2 px-4"
+            classList={{
+              'text-gray-300': isDarkMode(),
+            }}
             onClick={() => setMenuOpen(false)}
           >
             Projects
@@ -99,6 +122,9 @@ export default function Header() {
           <A
             href="/contact"
             class="py-2 px-4"
+            classList={{
+              'text-gray-300': isDarkMode(),
+            }}
             onClick={() => setMenuOpen(false)}
           >
             Contact

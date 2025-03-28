@@ -23,45 +23,67 @@ body.dark {
   animation: textShine 4s ease-in-out infinite alternate;
 }
 
-/* Make text-neutral-content more visible in dark mode */
-.dark .text-neutral-content {
+/* Dark mode text adjustments */
+[data-theme="dark"] .text-neutral-content {
   @apply text-gray-300;
 }
 
-.dark p {
+[data-theme="dark"] p {
   @apply text-gray-300;
 }
 
-.dark .section-title {
+[data-theme="dark"] .section-title {
   @apply text-white;
 }
 
-.dark .bg-base-200 {
-  @apply bg-neutral;
+/* Dark mode background adjustments */
+[data-theme="dark"] .bg-base-200 {
+  @apply bg-gray-800;
 }
 
-.dark .bg-base-100 {
-  @apply bg-neutral;
+[data-theme="dark"] .bg-base-100 {
+  @apply bg-gray-900;
+}
+
+/* Dark mode header */
+[data-theme="dark"] header.bg-base-100\/90 {
+  @apply bg-gray-900/90;
+}
+
+/* Dark mode card styling */
+[data-theme="dark"] .card {
+  @apply bg-gray-800 border-gray-700;
+}
+
+/* Dark mode project cards */
+[data-theme="dark"] .project-card {
+  @apply bg-gray-800 border-gray-700;
+}
+
+/* Dark mode tech tags */
+[data-theme="dark"] .project-card span.bg-base-200,
+[data-theme="dark"] span.bg-base-200 {
+  @apply bg-gray-700 text-gray-300;
 }
 
 /* Dark mode section divider adjustments */
-.dark .section-divider-gradient[style*="--section-color-to: 229, 231, 235"] {
+[data-theme="dark"] .section-divider-gradient[style*="--section-color-to: 229, 231, 235"] {
   --section-color-to: 31, 41, 55;
   /* dark mode equivalent of bg-base-200 (neutral color) */
 }
 
-.dark .section-divider-gradient[style*="--section-color-to: 255, 255, 255"] {
+[data-theme="dark"] .section-divider-gradient[style*="--section-color-to: 255, 255, 255"] {
   --section-color-to: 31, 41, 55;
   /* dark mode background (neutral color) */
 }
 
 /* Old SVG path styles kept for reference */
-.dark .section-divider svg path[fill="rgb(229 231 235)"] {
+[data-theme="dark"] .section-divider svg path[fill="rgb(229 231 235)"] {
   fill: #1F2937;
   /* dark mode equivalent of bg-base-200 (neutral color) */
 }
 
-.dark .section-divider svg path[fill="white"] {
+[data-theme="dark"] .section-divider svg path[fill="white"] {
   fill: #1F2937;
   /* dark mode background (neutral color) */
 }
@@ -95,6 +117,11 @@ body.dark {
   width: 100%;
 }
 
+/* Dark mode animated border */
+[data-theme="dark"] .animated-border:hover {
+  @apply text-white;
+}
+
 .bg-gradient-animate {
   @apply bg-gradient-to-r from-primary to-secondary animate-gradient-x;
 }
@@ -117,8 +144,6 @@ body.dark {
   bottom: 0;
   backdrop-filter: blur(8px);
 }
-
-
 
 .flipped {
   transform: rotate(180deg);

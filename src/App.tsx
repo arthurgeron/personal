@@ -1,7 +1,8 @@
 import { Route } from '@solidjs/router';
-import { Suspense, lazy } from 'solid-js';
+import { Suspense, lazy, onCleanup, onMount } from 'solid-js';
 import type { ParentProps } from 'solid-js';
 import Layout from './components/layout/Layout';
+import { initThemeDetection } from './utils/theme';
 
 // Lazy load pages
 const Home = lazy(() => import('./pages/Home'));
@@ -28,6 +29,11 @@ const Root = (props: ParentProps) => {
 };
 
 function App() {
+  // Initialize theme detection
+  onMount(() => {
+    const cleanup = initThemeDetection();
+    onCleanup(cleanup);
+  });
   return (
     <Route path="/" component={Root}>
       <Route path="/" component={Home} />
