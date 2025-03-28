@@ -1,5 +1,7 @@
+/// <reference types="vite/client" />
+
 import { A } from '@solidjs/router';
-import { onCleanup, onMount } from 'solid-js';
+import { createSignal, onCleanup, onMount } from 'solid-js';
 import SocialLinks from '../shared/SocialLinks';
 
 interface Particle {
@@ -9,11 +11,23 @@ interface Particle {
   speedX: number;
   speedY: number;
   opacity: number;
+  gridX?: number;
+  gridY?: number;
 }
+
+// Helper function for development logs only
+const isDev = () => process.env.NODE_ENV === 'development';
+const devLog = (...args: unknown[]): void => {
+  if (isDev()) console.log(...args);
+};
 
 export default function Hero() {
   let canvasRef: HTMLCanvasElement | undefined;
   let animationFrame: number | undefined;
+  const [isVisible, setIsVisible] = createSignal(true);
+  const connectionDistance = 150;
+  const gridSize = connectionDistance;
+  const spatialGrid: Record<string, Particle[]> = {};
 
   onMount(() => {
     if (!canvasRef) return;
@@ -21,9 +35,15 @@ export default function Hero() {
     const ctx = canvasRef.getContext('2d');
     if (!ctx) return;
 
+    // Detect if we should throttle animation based on device
+    const isMobile = window.innerWidth < 768;
+    const shouldThrottle = isMobile;
+    let lastFrameTime = 0;
+
     // Configure canvas
     const resizeCanvas = () => {
       if (!canvasRef) return;
+      devLog('Resizing canvas', window.innerWidth, window.innerHeight);
       canvasRef.width = window.innerWidth;
       canvasRef.height = window.innerHeight;
     };
@@ -31,9 +51,22 @@ export default function Hero() {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
+    // Setup visibility tracking to properly pause/resume animation
+    const handleVisibilityChange = () => {
+      devLog('Visibility change', document.hidden);
+      const newIsVisible = !document.hidden;
+      setIsVisible(newIsVisible);
+      
+      // Restart animation if becoming visible again and no animation frame is active
+      if (newIsVisible && !animationFrame) {
+        animate();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
     // Particle system setup
     const particles: Particle[] = [];
-    const particleCount = 100;
+    const particleCount = isMobile ? 75 : 150; // Reduced count for mobile
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
@@ -46,15 +79,60 @@ export default function Hero() {
       });
     }
 
+    // Spatial partitioning functions
+    const updateSpatialGrid = () => {
+      // Clear grid
+      for (const key of Object.keys(spatialGrid)) {
+        spatialGrid[key] = [];
+      }
+      
+      // Assign particles to grid cells
+      for (const particle of particles) {
+        const gridX = Math.floor(particle.x / gridSize);
+        const gridY = Math.floor(particle.y / gridSize);
+        particle.gridX = gridX;
+        particle.gridY = gridY;
+        
+        const key = `${gridX},${gridY}`;
+        if (!spatialGrid[key]) {
+          spatialGrid[key] = [];
+        }
+        spatialGrid[key].push(particle);
+      }
+    };
+    
+    const getNeighboringParticles = (particle: Particle): Particle[] => {
+      if (particle.gridX === undefined || particle.gridY === undefined) return [];
+      
+      const neighbors: Particle[] = [];
+      
+      // Check 9 surrounding cells (including current cell)
+      for (let offsetX = -1; offsetX <= 1; offsetX++) {
+        for (let offsetY = -1; offsetY <= 1; offsetY++) {
+          const checkX: number = particle.gridX + offsetX;
+          const checkY: number = particle.gridY + offsetY;
+          const key = `${checkX},${checkY}`;
+          
+          if (spatialGrid[key]) {
+            neighbors.push(...spatialGrid[key]);
+          }
+        }
+      }
+      
+      return neighbors;
+    };
+
     // Connection lines
     const drawLines = (p1: Particle, p2: Particle) => {
+      if (p1 === p2) return; // Skip self
+      
       const dx = p1.x - p2.x;
       const dy = p1.y - p2.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
 
-      if (distance < 150) {
+      if (distance < connectionDistance) {
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(16, 185, 129, ${0.15 * (1 - distance / 150)})`;
+        ctx.strokeStyle = `rgba(16, 185, 129, ${0.15 * (1 - distance / connectionDistance)})`;
         ctx.lineWidth = 0.5;
         ctx.moveTo(p1.x, p1.y);
         ctx.lineTo(p2.x, p2.y);
@@ -63,11 +141,35 @@ export default function Hero() {
     };
 
     // Animation loop
-    const animate = () => {
-      ctx.clearRect(0, 0, canvasRef.width, canvasRef.height);
+    const animate = (timestamp = 0) => {
+      // Don't continue animation if component isn't visible or canvas isn't available
+      if (!canvasRef || !ctx || !isVisible()) {
 
-      // Update and draw particles
-      particles.forEach((particle, index) => {
+        // Always request next frame even if we skip this one
+        animationFrame = requestAnimationFrame(animate);
+        return;
+      }
+      
+      // Check if canvas dimensions are valid
+      if (canvasRef.width === 0 || canvasRef.height === 0) {
+        resizeCanvas();
+        animationFrame = requestAnimationFrame(animate);
+        return;
+      }
+      
+      // Ensure context is preserved between frames
+      
+      // Throttle frame rate on mobile devices
+      if (shouldThrottle && timestamp - lastFrameTime < 33) {
+        animationFrame = requestAnimationFrame(animate);
+        return;
+      }
+      
+      lastFrameTime = timestamp;
+      ctx.clearRect(0, 0, canvasRef.width, canvasRef.height);
+      
+      // Update positions
+      for (const particle of particles) {
         particle.x += particle.speedX;
         particle.y += particle.speedY;
 
@@ -76,20 +178,31 @@ export default function Hero() {
         if (particle.x < 0) particle.x = canvasRef.width;
         if (particle.y > canvasRef.height) particle.y = 0;
         if (particle.y < 0) particle.y = canvasRef.height;
+      }
+      
+      // Update spatial grid for optimized connections
+      updateSpatialGrid();
 
+      // Draw particles and connections
+      for (const particle of particles) {
         // Draw particle
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(16, 185, 129, ${particle.opacity})`;
         ctx.fill();
-
-        // Connect particles with lines
-        for (let j = index + 1; j < particles.length; j++) {
-          drawLines(particle, particles[j]);
+        
+        // Get neighboring particles and draw connections
+        const neighbors = getNeighboringParticles(particle);
+        for (const neighbor of neighbors) {
+          if (particle !== neighbor) {
+            drawLines(particle, neighbor);
+          }
         }
-      });
+      }
 
-      // Make sure animation keeps running continuously
+
+      
+      // Schedule next frame only after completing this one
       animationFrame = requestAnimationFrame(animate);
     };
 
@@ -98,10 +211,13 @@ export default function Hero() {
 
     // Ensure proper cleanup
     onCleanup(() => {
+      devLog('Cleaning up animation');
       if (animationFrame) {
         cancelAnimationFrame(animationFrame);
+        animationFrame = undefined; // Clear the reference
       }
       window.removeEventListener('resize', resizeCanvas);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     });
   });
 
