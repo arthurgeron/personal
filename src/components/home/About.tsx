@@ -4,9 +4,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SplitType from 'split-type';
 
 export default function About() {
-  let titleRef: HTMLHeadingElement | undefined;
-  let textRef: HTMLDivElement | undefined;
-  let containerRef: HTMLDivElement | undefined;
+  let titleRef;
+  let textRef;
+  let containerRef;
   
   onMount(() => {
     if (!titleRef || !textRef || !containerRef) return;

@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --gradient-start: theme('colors.primary');
-  --gradient-end: theme('colors.secondary');
+  --gradient-start: #1E40AF;
+  --gradient-end: #10B981;
 }
 
 body {
-  @apply bg-base-100 text-neutral font-sans antialiased;
+  @apply bg-white text-neutral font-sans antialiased;
   overflow-x: hidden;
 }
 

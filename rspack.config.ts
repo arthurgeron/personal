@@ -1,8 +1,10 @@
 import { defineConfig } from "@rspack/cli";
 import { rspack } from "@rspack/core";
 import path from "node:path";
+import { fileURLToPath } from 'node:url';
 
 const targets = ["chrome >= 87", "edge >= 88", "firefox >= 78", "safari >= 14"];
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   context: __dirname,

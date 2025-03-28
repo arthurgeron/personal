@@ -1,0 +1,68 @@
+---
+description: 
+globs: *.tsx
+alwaysApply: false
+---
+# SolidJS Best Practices for Arthur Geron's Portfolio
+
+## Reactivity Patterns
+- Use signals (`createSignal`) for reactive state like in `ThemeToggle.tsx`
+- Never destructure signals or props directly when you need reactivity 
+- Access signal values using function syntax: `signalName()`
+- Use `createEffect` for side effects in response to signal changes
+- For derived values, use `createMemo` to avoid unnecessary recalculations
+- Example from the project: `const [theme, setTheme] = createSignal(...)` in ThemeToggle
+
+## Component Implementation
+- SolidJS components only run once, not on every update like React
+- Handle cleanup properly with `onCleanup` function, as seen in Hero.tsx:
+  ```tsx
+  onCleanup(() => {
+    cancelAnimationFrame(animationFrame);
+    window.removeEventListener('resize', resizeCanvas);
+  });
+  ```
+- Use `onMount` for initialization code that runs after component rendering:
+  ```tsx
+  onMount(() => {
+    // initialization code here
+  });
+  ```
+
+## Performance Optimization
+- Leverage lazy loading for route components as done in App.tsx:
+  ```tsx
+  const Home = lazy(() => import('./pages/Home'));
+  ```
+- Use `Suspense` to handle loading states for lazy components:
+  ```tsx
+  <Suspense fallback={<div>Loading...</div>}>
+    <Route path="/" component={Home} />
+  </Suspense>
+  ```
+- Canvas animations (as in Hero.tsx) should clean up properly to prevent memory leaks
+- CSS transitions are preferred over JavaScript animations for simple UI state changes
+
+## JSX and Component Organization
+- Use functional components throughout the application
+- Component props should have proper TypeScript interfaces
+- Separate concerns: UI components in `components/`, pages in `pages/`
+- Keep animation logic encapsulated in specific components or utilities
+
+## Routing
+- Use `@solidjs/router` for declarative routing
+- Use `<A>` component for navigation links (instead of anchor tags)
+- Example:
+  ```tsx
+  <A href="/projects" class="btn btn-primary btn-lg mr-4">View Projects</A>
+  ```
+
+## Animation Integration
+- Register GSAP plugins at the component level:
+  ```tsx
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  
+  gsap.registerPlugin(ScrollTrigger);
+  ```
+- Cleanup animations in `onCleanup` hook to prevent memory leaks 

@@ -3,8 +3,8 @@ import { A } from '@solidjs/router';
 import { gsap } from 'gsap';
 
 export default function Projects() {
-  let containerRef: HTMLDivElement | undefined;
-  const [hoveredProject, setHoveredProject] = createSignal<string | null>(null);
+  let containerRef;
+  const [hoveredProject, setHoveredProject] = createSignal(null);
   
   const featuredProjects = [
     {

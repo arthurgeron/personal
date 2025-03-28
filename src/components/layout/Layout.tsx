@@ -2,11 +2,7 @@ import { ParentProps } from 'solid-js';
 import Header from './Header';
 import Footer from './Footer';
 
-interface LayoutProps extends ParentProps {
-  className?: string;
-}
-
-export default function Layout(props: LayoutProps) {
+export default function Layout(props: ParentProps<{ className?: string }>) {
   return (
     <div class={`min-h-screen flex flex-col ${props.className || ''}`}>
       <Header />

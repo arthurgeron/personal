@@ -3,8 +3,8 @@ import { A } from '@solidjs/router';
 import SocialLinks from '../shared/SocialLinks';
 
 export default function Hero() {
-  let canvasRef: HTMLCanvasElement | undefined;
-  let animationFrame: number;
+  let canvasRef;
+  let animationFrame;
   
   onMount(() => {
     if (!canvasRef) return;

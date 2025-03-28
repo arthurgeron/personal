@@ -6,9 +6,9 @@ export default function Contact() {
   const [email, setEmail] = createSignal('');
   const [message, setMessage] = createSignal('');
   const [submitted, setSubmitted] = createSignal(false);
-  const [error, setError] = createSignal<string | null>(null);
+  const [error, setError] = createSignal(null);
 
-  const handleSubmit = (e: Event) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     
     // Validate form
@@ -36,7 +36,7 @@ export default function Contact() {
     setTimeout(() => setSubmitted(false), 5000);
   };
   
-  const isValidEmail = (email: string) => {
+  const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
