@@ -29,6 +29,57 @@ alwaysApply: false
   });
   ```
 
+## Control Flow Components
+- NEVER use `.map()` or traditional loops directly in JSX - this bypasses SolidJS's reactivity system
+- Always use SolidJS's built-in control flow components:
+  - `<For>` for list rendering (instead of `.map()`)
+  - `<Show>` for conditional rendering (instead of ternary operators)
+  - `<Switch>` and `<Match>` for multiple conditionals
+  - `<Index>` when the index is more important than the items themselves
+- Correct list rendering example:
+  ```tsx
+  // CORRECT:
+  <For each={movies()}>{(movie) => 
+    <MovieCard movie={movie} />
+  }</For>
+  
+  // INCORRECT - avoid this:
+  {movies().map(movie => <MovieCard movie={movie} />)}
+  ```
+- Correct conditional rendering:
+  ```tsx
+  // CORRECT:
+  <Show when={isLoading()} fallback={<MoviesList />}>
+    <LoadingSpinner />
+  </Show>
+  
+  // INCORRECT - avoid this:
+  {isLoading() ? <LoadingSpinner /> : <MoviesList />}
+  ```
+
+## State Management
+- Use `createSignal` for simple state
+- Use `createStore` for complex nested state:
+  ```tsx
+  const [state, setState] = createStore({
+    user: { name: "John", age: 25 },
+    preferences: { theme: "dark" }
+  });
+  
+  // Update nested state
+  setState("user", "name", "Jane");
+  ```
+- Use `createResource` for async data fetching:
+  ```tsx
+  const [movieData] = createResource(() => fetchMovieById(id()));
+  ```
+- Access loading/error states with resource properties:
+  ```tsx
+  <Show when={!movieData.loading} fallback={<Spinner />}>
+    <MovieDetails data={movieData()} />
+  </Show>
+  ```
+
 ## Performance Optimization
 - Leverage lazy loading for route components as done in App.tsx:
   ```tsx
@@ -42,6 +93,41 @@ alwaysApply: false
   ```
 - Canvas animations (as in Hero.tsx) should clean up properly to prevent memory leaks
 - CSS transitions are preferred over JavaScript animations for simple UI state changes
+- Utilize dynamic imports for code-splitting to improve initial load time
+- Always use the `key` property with a unique identifier when using `<For>` or `<Index>` components
+- Never use array index as the key unless the list is static and never changes order
+- Use `createMemo` to cache expensive calculations:
+  ```tsx
+  const filteredMovies = createMemo(() => {
+    return movies().filter(movie => movie.title.includes(searchTerm()));
+  });
+  ```
+- When unsubscribing from events or cleaning up resources, always use `onCleanup`
+
+## Event Handling
+- Use camelCase event handlers in JSX:
+  ```tsx
+  <button onClick={handleClick}>Click me</button>
+  ```
+- Avoid inline arrow functions in events when possible:
+  ```tsx
+  // Prefer:
+  const handleSearch = (event) => {
+    setSearchWord(event.target.value);
+  };
+  <input onChange={handleSearch} />
+  
+  // Instead of:
+  <input onChange={(e) => setSearchWord(e.target.value)} />
+  ```
+- For forms, use `preventDefault` to handle form submission:
+  ```tsx
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission
+  };
+  <form onSubmit={handleSubmit}>...</form>
+  ```
 
 ## JSX and Component Organization
 - Use functional components throughout the application
