@@ -83,7 +83,7 @@ export default function Projects() {
       {
         y: 0,
         opacity: 1,
-        stagger: 0.1,
+        stagger: 0,
         duration: 0.6,
         ease: 'power2.out',
       },
@@ -97,7 +97,7 @@ export default function Projects() {
       {
         scale: 1,
         opacity: 1,
-        stagger: 0.05,
+        stagger: 0,
         duration: 0.4,
         ease: 'power2.out',
       },
