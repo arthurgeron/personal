@@ -28,6 +28,7 @@ export default function SocialLinks() {
     <div class="flex space-x-4 justify-center md:justify-start">
       {socialLinks.map((link) => (
         <a 
+          key={link.url}
           href={link.url} 
           target="_blank" 
           rel="noopener noreferrer"

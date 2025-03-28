@@ -39,6 +39,7 @@ export default function Header() {
         
         {/* Mobile Menu Button */}
         <button 
+          type="button"
           class="md:hidden text-neutral"
           onClick={toggleMenu}
           aria-label="Toggle menu"
@@ -50,6 +51,7 @@ export default function Header() {
             stroke-width="1.5" 
             stroke="currentColor" 
             class="w-6 h-6"
+            aria-hidden="true"
           >
             <path 
               stroke-linecap="round" 

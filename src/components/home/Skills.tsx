@@ -1,6 +1,9 @@
 import { createSignal, onMount } from 'solid-js';
 import { gsap } from 'gsap';
-import { motion } from '@motionone/solid';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Motion } from '@motionone/solid';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Skills() {
   let containerRef: HTMLDivElement | undefined;
@@ -51,7 +54,8 @@ export default function Skills() {
         
         <div class="flex flex-wrap justify-center gap-4 mt-12">
           {skills.map((skill) => (
-            <motion.div
+            <Motion.div
+              key={skill.name}
               class="skill-item px-6 py-3 rounded-full bg-base-200 shadow-sm hover:shadow-md transition-all duration-300"
               classList={{
                 'bg-primary text-white': hoveredSkill() === skill.name,
@@ -64,7 +68,7 @@ export default function Skills() {
               transition={{ duration: 0.2 }}
             >
               {skill.name}
-            </motion.div>
+            </Motion.div>
           ))}
         </div>
       </div>
