@@ -3,27 +3,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { For, createSignal, onMount } from 'solid-js';
 import { Motion } from 'solid-motionone';
 import { isDarkMode } from '../../utils/theme';
+import { SKILLS } from '../../constants/skills';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Skills() {
   let containerRef: HTMLDivElement | undefined;
   const [hoveredSkill, setHoveredSkill] = createSignal<string | null>(null);
-
-  const skills = [
-    { name: 'React', category: 'frontend' },
-    { name: 'React Native', category: 'frontend' },
-    { name: 'TypeScript', category: 'languages' },
-    { name: 'JavaScript', category: 'languages' },
-    { name: 'HTML/CSS', category: 'frontend' },
-    { name: 'Web3', category: 'web3' },
-    { name: 'Fuel Network', category: 'web3' },
-    { name: 'Solidity', category: 'web3' },
-    { name: 'Node.js', category: 'backend' },
-    { name: 'Redux', category: 'frontend' },
-    { name: 'ESLint', category: 'tools' },
-    { name: 'Git', category: 'tools' },
-  ];
 
   onMount(() => {
     if (!containerRef) return;
@@ -61,7 +47,7 @@ export default function Skills() {
           <h2 class="section-title">Skills & Technologies</h2>
 
           <div class="flex flex-wrap justify-center gap-4 mt-12">
-            <For each={skills}>
+            <For each={SKILLS}>
               {(skill) => (
                 <Motion.div
                   class="skill-item px-6 py-3 rounded-full bg-base-200 shadow-sm hover:shadow-md transition-all duration-300"

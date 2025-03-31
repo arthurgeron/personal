@@ -1,5 +1,7 @@
 import { gsap } from 'gsap';
 import { For, createSignal, onMount } from 'solid-js';
+import { CATEGORIES, PROJECTS } from '../constants/projects';
+import { Project } from '../types/interfaces';
 
 export default function Projects() {
   const [selectedCategory, setSelectedCategory] = createSignal<string | null>(
@@ -9,67 +11,11 @@ export default function Projects() {
 
   let containerRef: HTMLDivElement | undefined;
 
-  const categories = ['All', 'Frontend', 'Web3', 'Tools', 'Libraries'];
-
-  const projects = [
-    {
-      id: 'eslint-plugin',
-      title: 'ESLint Plugin for React useMemo',
-      description:
-        'A plugin that helps developers write more efficient React components by properly using useMemo for performance optimization.',
-      technologies: ['TypeScript', 'ESLint', 'React'],
-      category: 'Tools',
-      github: 'https://github.com/arthurgeron/eslint-plugin-react-usememo',
-      stars: 73,
-      featured: true,
-    },
-    {
-      id: 'context-selector',
-      title: 'Context Selector',
-      description:
-        'A library that enables efficient React Context API usage with native selector patterns.',
-      technologies: ['TypeScript', 'React'],
-      category: 'Libraries',
-      github: 'https://github.com/arthurgeron/context-selector',
-      stars: 10,
-      featured: true,
-    },
-    {
-      id: 'web-crawler',
-      title: 'Web Crawler',
-      description:
-        'A customizable web crawler built in Python for gathering and analyzing web data.',
-      technologies: ['Python', 'Web Scraping'],
-      category: 'Tools',
-      github: 'https://github.com/arthurgeron/webCrawler',
-      featured: true,
-    },
-    {
-      id: 'miner-away',
-      title: 'MinerAway',
-      description: 'A tool to detect and block JavaScript miners on websites.',
-      technologies: ['JavaScript', 'Browser Extension'],
-      category: 'Tools',
-      github: 'https://github.com/arthurgeron/MinerAway',
-      featured: false,
-    },
-    {
-      id: 'eslint-config',
-      title: 'ESLint Config',
-      description:
-        'Custom ESLint configuration for React JS and React Native projects.',
-      technologies: ['JavaScript', 'ESLint'],
-      category: 'Tools',
-      github: 'https://github.com/arthurgeron/eslint-config',
-      featured: false,
-    },
-  ];
-
   const filteredProjects = () => {
     if (!selectedCategory() || selectedCategory() === 'All') {
-      return projects;
+      return PROJECTS;
     }
-    return projects.filter(
+    return PROJECTS.filter(
       (project) => project.category === selectedCategory(),
     );
   };
@@ -122,7 +68,7 @@ export default function Projects() {
         </p>
 
         <div class="flex flex-wrap justify-center gap-3 mb-12">
-          <For each={categories}>
+          <For each={CATEGORIES}>
             {(category) => (
               <button
                 type="button"
@@ -170,11 +116,13 @@ export default function Projects() {
                   <p class="mb-4 text-neutral/80">{project.description}</p>
 
                   <div class="flex flex-wrap gap-2 mb-6">
-                    {project.technologies.map((tech) => (
-                      <span  class="px-2 py-1 bg-base-200 rounded-md text-xs">
-                        {tech}
-                      </span>
-                    ))}
+                    <For each={project.technologies}>
+                      {(tech) => (
+                        <span class="px-2 py-1 bg-base-200 rounded-md text-xs">
+                          {tech}
+                        </span>
+                      )}
+                    </For>
                   </div>
 
                   <div class="flex items-center justify-between mt-auto">

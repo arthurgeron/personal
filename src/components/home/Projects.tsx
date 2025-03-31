@@ -1,39 +1,11 @@
 import { A } from '@solidjs/router';
 import { gsap } from 'gsap';
 import { For, createSignal, onMount } from 'solid-js';
+import { FEATURED_PROJECTS } from '../../constants/projects';
 
 export default function Projects() {
   let containerRef: HTMLElement | undefined;
   const [hoveredProject, setHoveredProject] = createSignal<string | null>(null);
-
-  const featuredProjects = [
-    {
-      id: 'eslint-plugin',
-      title: 'ESLint Plugin for React useMemo',
-      description:
-        'A plugin that helps developers write more efficient React components by properly using useMemo for performance optimization.',
-      technologies: ['TypeScript', 'ESLint', 'React'],
-      github: 'https://github.com/arthurgeron/eslint-plugin-react-usememo',
-      stars: 73,
-    },
-    {
-      id: 'context-selector',
-      title: 'Context Selector',
-      description:
-        'A library that enables efficient React Context API usage with native selector patterns.',
-      technologies: ['TypeScript', 'React'],
-      github: 'https://github.com/arthurgeron/context-selector',
-      stars: 10,
-    },
-    {
-      id: 'web-crawler',
-      title: 'Web Crawler',
-      description:
-        'A customizable web crawler built in Python for gathering and analyzing web data.',
-      technologies: ['Python', 'Web Scraping'],
-      github: 'https://github.com/arthurgeron/webCrawler',
-    },
-  ];
 
   onMount(() => {
     if (!containerRef) return;
@@ -68,7 +40,7 @@ export default function Projects() {
           <h2 class="section-title">Featured Projects</h2>
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-            <For each={featuredProjects}>
+            <For each={FEATURED_PROJECTS}>
               {(project) => (
                 <div
                   class="project-card bg-base-100 rounded-xl shadow-lg overflow-hidden transition-all duration-300"

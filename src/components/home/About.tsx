@@ -1,7 +1,8 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { onMount } from 'solid-js';
+import { For, onMount } from 'solid-js';
 import SplitType from 'split-type';
+import { ABOUT_CONTENT } from '../../constants/about';
 
 export default function About() {
   let titleRef: HTMLHeadingElement | undefined;
@@ -60,29 +61,13 @@ export default function About() {
         <div class="container-custom">
           <div class="max-w-4xl mx-auto">
             <h2 ref={titleRef} class="section-title mb-12">
-              About Me
+              {ABOUT_CONTENT.TITLE}
             </h2>
 
             <div ref={textRef} class="prose prose-lg max-w-none">
-              <p class="mb-6">
-                I'm a passionate Web3 & React Developer with expertise in building
-                decentralized applications and modern web interfaces. As a
-                contributor to the Fuel Network, I'm actively involved in
-                developing the next generation of blockchain technologies.
-              </p>
-
-              <p class="mb-6">
-                My journey in software development has led me to create tools and
-                libraries that help developers build performant and scalable
-                applications. I believe in writing clean, maintainable code that
-                solves real problems.
-              </p>
-
-              <p>
-                When I'm not coding, I'm exploring new technologies, contributing
-                to open source projects, and sharing knowledge with the developer
-                community.
-              </p>
+              <For each={ABOUT_CONTENT.PARAGRAPHS}>
+                {(paragraph) => <p class="mb-6">{paragraph}</p>}
+              </For>
             </div>
           </div>
         </div>

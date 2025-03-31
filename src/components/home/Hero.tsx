@@ -2,24 +2,15 @@ import { A } from '@solidjs/router';
 import { createSignal, onCleanup, onMount } from 'solid-js';
 import SocialLinks from '../shared/SocialLinks';
 import { isDarkMode } from '../../utils/theme';
-
-interface Particle {
-  x: number;
-  y: number;
-  size: number;
-  speedX: number;
-  speedY: number;
-  opacity: number;
-  gridX?: number;
-  gridY?: number;
-}
+import type { Particle, ThemeColors } from '../../types/interfaces';
+import { PARTICLE_CONFIG } from '../../constants/hero';
 
 export default function Hero() {
   let canvasRef: HTMLCanvasElement | undefined;
   let animationFrame: number | undefined;
   const [isVisible, setIsVisible] = createSignal(true);
-  const connectionDistance = 150;
-  const gridSize = connectionDistance;
+  const connectionDistance = PARTICLE_CONFIG.CONNECTION_DISTANCE;
+  const gridSize = PARTICLE_CONFIG.GRID_SIZE;
   const spatialGrid: Record<string, Particle[]> = {};
 
   onMount(() => {
@@ -29,7 +20,7 @@ export default function Hero() {
     if (!ctx) return;
 
     // Function to get appropriate colors based on theme
-    const getThemeColors = () => {
+    const getThemeColors = (): ThemeColors => {
       return isDarkMode() 
         ? { particle: 'rgba(255, 255, 255, $opacity)', connection: 'rgba(255, 255, 255, $opacity)' }
         : { particle: 'rgba(16, 185, 129, $opacity)', connection: 'rgba(16, 185, 129, $opacity)' };
@@ -49,7 +40,7 @@ export default function Hero() {
     });
 
     // Detect if we should throttle animation based on device
-    const isMobile = window.innerWidth < 768;
+    const isMobile = window.innerWidth < PARTICLE_CONFIG.MOBILE_THRESHOLD;
     const shouldThrottle = isMobile;
     let lastFrameTime = 0;
 
@@ -83,16 +74,20 @@ export default function Hero() {
 
     // Particle system setup
     const particles: Particle[] = [];
-    const particleCount = isMobile ? 75 : 150; // Reduced count for mobile
+    const particleCount = isMobile 
+      ? PARTICLE_CONFIG.MOBILE_PARTICLE_COUNT 
+      : PARTICLE_CONFIG.DESKTOP_PARTICLE_COUNT;
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * canvasRef.width,
         y: Math.random() * canvasRef.height,
-        size: Math.random() * 3 + 1,
-        speedX: (Math.random() - 0.5) * 0.5,
-        speedY: (Math.random() - 0.5) * 0.5,
-        opacity: Math.random() * 0.5 + 0.2,
+        size: Math.random() * PARTICLE_CONFIG.MAX_PARTICLE_SIZE + PARTICLE_CONFIG.MIN_PARTICLE_SIZE,
+        speedX: (Math.random() - 0.5) * PARTICLE_CONFIG.PARTICLE_SPEED_RANGE,
+        speedY: (Math.random() - 0.5) * PARTICLE_CONFIG.PARTICLE_SPEED_RANGE,
+        opacity: Math.random() * 
+          (PARTICLE_CONFIG.MAX_PARTICLE_OPACITY - PARTICLE_CONFIG.MIN_PARTICLE_OPACITY) + 
+          PARTICLE_CONFIG.MIN_PARTICLE_OPACITY,
       });
     }
 
@@ -246,11 +241,10 @@ export default function Hero() {
     // Start the animation
     animate();
 
-    // Ensure proper cleanup
+    // Clean up resources
     onCleanup(() => {
-      if (animationFrame) {
+      if (animationFrame !== undefined) {
         cancelAnimationFrame(animationFrame);
-        animationFrame = undefined; // Clear the reference
       }
       window.removeEventListener('resize', resizeCanvas);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
