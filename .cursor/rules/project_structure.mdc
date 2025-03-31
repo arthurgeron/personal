@@ -50,6 +50,19 @@ arthur-geron-portfolio/
 ├── .babelrc                    # Babel configuration
 └── .tool-versions              # Tool versions specification
 ```
+### Types Constants and Utils
+- Types, constants and utils can be either local to the respective component, and global when used on other modules
+src/
+├── types/
+│   └── interfaces.ts
+├── constants/
+│   └── parseNumber.ts
+└── components/
+    └── Home/
+        └── Home.tsx
+        └── constants.ts
+        └── utils.ts
+        └── interfaces.ts
 
 ## Key Component Organization
 
@@ -70,3 +83,106 @@ Defined in `App.tsx` using `@solidjs/router`:
 - `/projects` - Projects showcase
 - `/contact` - Contact form
 - `/*` - NotFound (404) page 
+
+## Best Practices for Code Organization
+
+### Data and Types Separation
+- **Types**: Always define interfaces and types in dedicated files:
+  - Global types in `src/types/interfaces.ts`
+  - Component-specific types in `./component-name/interfaces.ts`
+- **Constants**: Store non-reactive data outside components:
+  - Global constants in `src/constants/index.ts`
+  - Feature-specific constants in `./feature-name/constants.ts`
+- **Utils**: Keep utility functions separated from components:
+  - Global utility functions in `src/utils/index.ts`
+  - Feature-specific utilities in `./feature-name/utils.ts`
+
+### Component File Guidelines
+- Component files (*.tsx) should:
+  - Import types, constants, and utilities from dedicated files
+  - Focus only on component logic, JSX structure, and SolidJS reactivity
+  - Not contain static data structures or pure functions unrelated to component logic
+  - Be kept under 200 lines when possible; extract complex logic when needed
+
+### Module Organization Example
+```typescript
+// Good organization for a feature module
+feature/
+├── index.tsx              // Main component export
+├── FeatureComponent.tsx   // Component implementation
+├── interfaces.ts          // Types for this feature
+├── constants.ts           // Constants for this feature
+└── utils.ts               // Utility functions
+```
+```
+
+## For solidjs_practices.mdc
+
+```markdown
+## Code Organization and Data Management
+
+### Data Declaration Patterns
+
+- **Static Data**: Unlike React, SolidJS components only run once, not on every update. However, for maintainability and reusability:
+  ```typescript
+  // CORRECT: Declare outside of component scope
+  const ITEMS = ['item1', 'item2', 'item3'];
+  
+  function MyComponent() {
+    return <For each={ITEMS}>{item => <div>{item}</div>}</For>;
+  }
+  
+  // AVOID: Don't declare static data inside components
+  function MyComponent() {
+    const items = ['item1', 'item2', 'item3']; // Unnecessarily scoped to component
+    return <For each={items}>{item => <div>{item}</div>}</For>;
+  }
+  ```
+
+- **Module Structure**: Place related items in dedicated files:
+  ```typescript
+  // constants.ts
+  export const ITEMS = ['item1', 'item2', 'item3'];
+  
+  // interfaces.ts
+  export interface Item {
+    id: string;
+    name: string;
+  }
+  
+  // Component.tsx
+  import { ITEMS } from './constants';
+  import { Item } from './interfaces';
+  ```
+
+### When to Use Component-Scoped Data
+
+- Reserve component-scoped data for:
+  - Data derived from props
+  - Data used with reactive primitives (signals, stores)
+  - Values that genuinely need component-level isolation
+
+- Example of appropriate component-scoped data:
+  ```typescript
+  function DataProcessor(props) {
+    // Properly scoped: derived from props
+    const processedData = createMemo(() => {
+      return props.items.map(item => transformItem(item));
+    });
+    
+    return <DataDisplay data={processedData()} />;
+  }
+  ```
+
+### Benefits of Separation in SolidJS
+
+- Improves code organization and maintainability
+- Makes data and types reusable across components
+- Supports better testing isolation
+- Prevents potential memory issues with large data structures
+- Creates clear boundaries between presentation and data
+```
+
+These additions to your documentation will help prevent the issues we found and provide clear guidelines for code organization in your SolidJS project.
+
+

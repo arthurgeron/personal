@@ -185,3 +185,84 @@ alwaysApply: false
     );
   }
   ```
+
+## Solid VS React
+Unlike React, SolidJS components only run once and don't re-render, as mentioned in the documentation:
+> Components are lightweight in that they are not stateful themselves and have no instances. Instead, they serve as factory functions for DOM elements and reactive primitives.
+> Vanishing Components: Component functions are called once and then cease to exist. Components exist to organize your code and not much else.
+While in React moving constants outside components prevents recreating them on re-renders, in SolidJS it's more about:
+- Clean code organization
+- Separation of concerns
+- Making data reusable across components
+
+## Code Organization and Data Management
+
+### Data Declaration Patterns
+
+- **Static Data**: Unlike React, SolidJS components only run once, not on every update. However, for maintainability and reusability:
+  ```typescript
+  // CORRECT: Declare outside of component scope
+  const ITEMS = ['item1', 'item2', 'item3'];
+  
+  function MyComponent() {
+    return <For each={ITEMS}>{item => <div>{item}</div>}</For>;
+  }
+  
+  // AVOID: Don't declare static data inside components
+  function MyComponent() {
+    const items = ['item1', 'item2', 'item3']; // Unnecessarily scoped to component
+    return <For each={items}>{item => <div>{item}</div>}</For>;
+  }
+  ```
+
+- **Module Structure**: Place related items in dedicated files:
+  ```typescript
+  // constants.ts
+  export const ITEMS = ['item1', 'item2', 'item3'];
+  
+  // interfaces.ts
+  export interface Item {
+    id: string;
+    name: string;
+  }
+  
+  // Component.tsx
+  import { ITEMS } from './constants';
+  import { Item } from './interfaces';
+  ```
+
+### When to Use Component-Scoped Data
+
+- Reserve component-scoped data for:
+  - Data derived from props
+  - Data used with reactive primitives (signals, stores)
+  - Values that genuinely need component-level isolation
+
+- Example of appropriate component-scoped data:
+  ```typescript
+  function DataProcessor(props) {
+    // Properly scoped: derived from props
+    const processedData = createMemo(() => {
+      return props.items.map(item => transformItem(item));
+    });
+    
+    return <DataDisplay data={processedData()} />;
+  }
+  ```
+
+### Benefits of Separation in SolidJS
+
+- Improves code organization and maintainability
+- Makes data and types reusable across components
+- Supports better testing isolation
+- Prevents potential memory issues with large data structures
+- Creates clear boundaries between presentation and data
+
+## Solid VS React
+Unlike React, SolidJS components only run once and don't re-render, as mentioned in the documentation:
+> Components are lightweight in that they are not stateful themselves and have no instances. Instead, they serve as factory functions for DOM elements and reactive primitives.
+> Vanishing Components: Component functions are called once and then cease to exist. Components exist to organize your code and not much else.
+While in React moving constants outside components prevents recreating them on re-renders, in SolidJS it's more about:
+- Clean code organization
+- Separation of concerns
+- Making data reusable across components
