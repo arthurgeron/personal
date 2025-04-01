@@ -117,7 +117,7 @@ export default defineConfig({
     },
   },
   devServer: {
-    port: 3001,
+    port: 3030,
     historyApiFallback: true,
     hot: true,
   },
