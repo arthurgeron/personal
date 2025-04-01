@@ -70,7 +70,9 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
-          protocol: ftps
+          protocol: ftp
           local-dir: ./dist/
           server-dir: /public_html/
-          dangerous-clean-slate: true # Use with caution - removes existing files 
+          dangerous-clean-slate: true
+          timeout: 120000
+          log-level: verbose 
