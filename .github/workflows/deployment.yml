@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
 
+# Add concurrency to ensure only one deployment runs at a time
+concurrency:
+  group: production-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-and-deploy:
     name: Build and Deploy
