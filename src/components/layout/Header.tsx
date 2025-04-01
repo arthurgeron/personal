@@ -46,7 +46,7 @@ export default function Header() {
           <A href="/contact" class="animated-border font-medium">
             Contact
           </A>
-          {/* <ThemeToggle />  */}
+          <ThemeToggle /> 
         </nav>
 
         {/* Mobile Menu Button */}
@@ -130,7 +130,7 @@ export default function Header() {
             Contact
           </A>
           <div class="py-2 px-4">
-            {/* <ThemeToggle /> */}
+            <ThemeToggle />
           </div>
         </nav>
       </div>
