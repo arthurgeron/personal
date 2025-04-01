@@ -46,7 +46,7 @@ export default function Header() {
           <A href="/contact" class="animated-border font-medium">
             Contact
           </A>
-          {/* <ThemeToggle />  */}
+          <ThemeToggle /> 
         </nav>
 
         {/* Mobile Menu Button */}

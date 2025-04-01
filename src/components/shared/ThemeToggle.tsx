@@ -2,7 +2,7 @@ import { createSignal, onMount } from 'solid-js';
 
 export default function ThemeToggle() {
   const [theme, setTheme] = createSignal(
-    localStorage.getItem('theme') || 'light',
+    'light'// localStorage.getItem('theme'),
   );
 
   onMount(() => {
@@ -13,10 +13,11 @@ export default function ThemeToggle() {
       setTheme(savedTheme);
     } else {
       // Check system preference
-      const prefersDark = window.matchMedia(
-        '(prefers-color-scheme: dark)',
-      ).matches;
-      const defaultTheme = prefersDark ? 'dark' : 'light';
+      // const prefersDark = window.matchMedia(
+      //   '(prefers-color-scheme: dark)',
+      // ).matches;
+      // const defaultTheme = prefersDark ? 'dark' : 'light';
+      const defaultTheme = 'light';
       document.documentElement.setAttribute('data-theme', defaultTheme);
       setTheme(defaultTheme);
       localStorage.setItem('theme', defaultTheme);
@@ -32,6 +33,7 @@ export default function ThemeToggle() {
 
   return (
     <button
+      type="button"
       onClick={toggleTheme}
       class="p-2 rounded-full hover:bg-base-200 transition-colors duration-200"
       aria-label={`Switch to ${theme() === 'light' ? 'dark' : 'light'} mode`}
@@ -45,6 +47,7 @@ export default function ThemeToggle() {
           stroke="currentColor"
           class="w-5 h-5"
         >
+          <title>Dark Mode</title>
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -60,6 +63,7 @@ export default function ThemeToggle() {
           stroke="currentColor"
           class="w-5 h-5"
         >
+          <title>Light Mode</title>
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
