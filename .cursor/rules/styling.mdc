@@ -1,6 +1,6 @@
 ---
-description: Styling Guidelines
-globs: 
+description: 
+globs: *.tsx,*.css
 alwaysApply: false
 ---
 # Styling Guidelines: Arthur Geron's Portfolio
@@ -85,3 +85,29 @@ keyframes: {
 - Special effects like `text-gradient` implemented through global classes
 - Consistent spacing using Tailwind's margin/padding utilities
 - Container and layout components handle overall page structure 
+
+## Layout and Composition
+
+### Grouping Interactive Elements
+
+When placing multiple related interactive elements like buttons, inputs, or dropdowns together (e.g., filter controls, form actions):
+
+- **Use Common Containers:** Wrap them in a single `flex` or `grid` container to manage layout consistently.
+- **Consistent Spacing:** Utilize Tailwind `gap-*` utilities within the container for uniform spacing between elements.
+- **Alignment:** Ensure elements are properly aligned using Flexbox (`items-center`, `items-baseline`) or Grid alignment properties.
+- **DaisyUI Join:** Consider using the DaisyUI `Join` component for directly adjacent, visually connected items like button groups or segmented controls, according to DaisyUI documentation.
+
+### Visual Consistency
+
+Maintain visual harmony across related UI controls:
+
+- **Shared Styles:** Apply consistent base styling (e.g., size `btn-sm`, shape `rounded-full`) to similar elements within a group.
+- **Consistent States:** Ensure active, inactive, hover, and focus states are visually similar or complementary across related controls (e.g., use `btn-primary` for the active state on both category buttons and the filter dropdown trigger).
+
+
+## Links
+- [Daisy UI Components](mdc:https:/daisyui.com/components)
+- [Daisy UI Themes](mdc:https:/daisyui.com/docs/themes)
+- [daisyUI base style](mdc:https:/daisyui.com/docs/base)
+- [Utility classes and CSS variables](mdc:https:/daisyui.com/docs/utilities)
+- [Layout and Typography](mdc:https:/daisyui.com/docs/layout-and-typography)
