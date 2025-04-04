@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { For, createSignal, onMount } from 'solid-js';
-import { Motion } from 'solid-motionone';
+import { For, onMount } from 'solid-js';
+import { A } from '@solidjs/router';
 import { isDarkMode } from '../../utils/theme';
 import { SKILLS } from '../../constants/skills';
 
@@ -9,7 +9,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Skills() {
   let containerRef: HTMLDivElement | undefined;
-  const [hoveredSkill, setHoveredSkill] = createSignal<string | null>(null);
 
   onMount(() => {
     if (!containerRef) return;
@@ -49,21 +48,15 @@ export default function Skills() {
           <div class="flex flex-wrap justify-center gap-4 mt-12">
             <For each={SKILLS}>
               {(skill) => (
-                <Motion.div
-                  class="skill-item px-6 py-3 rounded-full bg-base-200 shadow-sm hover:shadow-md transition-all duration-300"
+                <A
+                  href={`/projects?skill=${encodeURIComponent(skill.name)}`}
+                  class="skill-item px-6 py-3 rounded-full bg-base-200 shadow-sm hover:shadow-md hover:bg-primary hover:text-white transition-all duration-300"
                   classList={{
-                    'bg-primary text-white': hoveredSkill() === skill.name,
-                    'text-neutral-content': isDarkMode() && hoveredSkill() !== skill.name,
+                    'text-neutral-content': isDarkMode(),
                   }}
-                  onMouseEnter={() => setHoveredSkill(skill.name)}
-                  onMouseLeave={() => setHoveredSkill(null)}
-                  animate={{
-                    scale: hoveredSkill() === skill.name ? 1.05 : 1,
-                  }}
-                  transition={{ duration: 0.2 }}
                 >
                   {skill.name}
-                </Motion.div>
+                </A>
               )}
             </For>
           </div>
