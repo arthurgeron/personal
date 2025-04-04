@@ -28,9 +28,19 @@ export default function Header() {
       }}
     >
       <div class="container-custom py-4 flex justify-between items-center">
-        <A href="/" class="text-2xl font-bold text-gradient">
-          AG
-        </A>
+        {/* Wrap logo in a relative container */}
+        <div class="relative">
+          <A href="/" class="text-2xl font-bold text-gradient block">
+            AG
+          </A>
+          {/* Under Construction Banner */}
+          <div
+            class="absolute top-7 left-1/2 transform -translate-x-1/2 bg-warning text-warning-content text-[0.6rem] font-semibold px-4 py-0.5 rounded shadow-md whitespace-nowrap pointer-events-none z-10"
+            style={{ "transform-origin": "top left" }}
+          >
+            Under Construction
+          </div>
+        </div>
 
         {/* Desktop Navigation */}
         <nav class="hidden md:flex items-center space-x-8">
