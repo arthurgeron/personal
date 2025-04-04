@@ -20,15 +20,19 @@ export default function Projects() {
 
   let initialCategory: string | null = null;
   if (!initialSkill) {
-      if (Array.isArray(initialCategoryParam)) {
-        initialCategory = initialCategoryParam[0] || null;
-      } else {
-        initialCategory = initialCategoryParam || null;
-      }
+    if (Array.isArray(initialCategoryParam)) {
+      initialCategory = initialCategoryParam[0] || null;
+    } else {
+      initialCategory = initialCategoryParam || null;
+    }
   }
-  
-  const [selectedCategory, setSelectedCategory] = createSignal<string | null>(initialCategory);
-  const [selectedSkill, setSelectedSkill] = createSignal<string | null>(initialSkill);
+
+  const [selectedCategory, setSelectedCategory] = createSignal<string | null>(
+    initialCategory,
+  );
+  const [selectedSkill, setSelectedSkill] = createSignal<string | null>(
+    initialSkill,
+  );
   const [hoveredProject, setHoveredProject] = createSignal<string | null>(null);
 
   let containerRef: HTMLDivElement | undefined;
@@ -41,44 +45,36 @@ export default function Projects() {
       return PROJECTS.filter((project) => project.technologies.includes(skill));
     }
     if (category && category !== 'All') {
-       if (CATEGORIES.includes(category) && category !== 'All') {
-           return PROJECTS.filter((project) => project.category === category);
-       } 
+      if (CATEGORIES.includes(category) && category !== 'All') {
+        return PROJECTS.filter((project) => project.category === category);
+      }
     }
     return PROJECTS;
+  };
+
+
+  const animateFilteredProjects = () => {
+    if (!containerRef) return;
+    gsap.fromTo(
+      '.project-card',
+      { scale: 0.9, y: 30, opacity: 0 },
+      {
+        scale: 1,
+        y: 0,
+        opacity: 1,
+        duration: 0.2,
+        ease: 'elastic.in',
+        stagger: 0.2
+      },
+    );
   };
 
   onMount(() => {
     if (!containerRef) return;
     if (!initialCategory && !initialSkill) {
-      gsap.fromTo(
-        '.project-card',
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.1,
-          duration: 0.6,
-          ease: 'power2.out',
-        },
-      );
+      animateFilteredProjects()
     }
   });
-
-  const animateFilteredProjects = () => {
-     if (!containerRef) return;
-    gsap.fromTo(
-      '.project-card',
-      { scale: 0.9, opacity: 0 },
-      {
-        scale: 1,
-        opacity: 1,
-        stagger: 0.05,
-        duration: 0.4,
-        ease: 'power2.out',
-      },
-    );
-  };
 
   const handleCategoryChange = (category: string) => {
     const newCategory = category === 'All' ? null : category;
@@ -93,19 +89,22 @@ export default function Projects() {
     setSelectedCategory(null);
     setSearchParams({ skill: skill || undefined, category: undefined });
     const dropdownElement = document.getElementById('skill-dropdown');
-    if (dropdownElement instanceof HTMLElement && dropdownElement.hasAttribute('open')) {
-         dropdownElement.removeAttribute('open'); 
+    if (
+      dropdownElement instanceof HTMLElement &&
+      dropdownElement.hasAttribute('open')
+    ) {
+      dropdownElement.removeAttribute('open');
     }
-     setTimeout(() => {
-        animateFilteredProjects(); 
-        (document.activeElement as HTMLElement)?.blur();
-     }, 50);
+    setTimeout(() => {
+      animateFilteredProjects();
+      (document.activeElement as HTMLElement)?.blur();
+    }, 50);
   };
 
   createEffect(() => {
     const skillParamValue = searchParams.skill;
     const categoryParamValue = searchParams.category;
-    
+
     let skillFromUrl: string | null = null;
     if (Array.isArray(skillParamValue)) {
       skillFromUrl = skillParamValue[0] || null;
@@ -115,23 +114,23 @@ export default function Projects() {
 
     let categoryFromUrl: string | null = null;
     if (!skillFromUrl) {
-        if (Array.isArray(categoryParamValue)) {
-          categoryFromUrl = categoryParamValue[0] || null;
-        } else {
-          categoryFromUrl = categoryParamValue || null;
-        }
+      if (Array.isArray(categoryParamValue)) {
+        categoryFromUrl = categoryParamValue[0] || null;
+      } else {
+        categoryFromUrl = categoryParamValue || null;
+      }
     }
 
     let needsUpdate = false;
     if (skillFromUrl !== selectedSkill()) {
-        setSelectedSkill(skillFromUrl);
-        if(selectedCategory() !== null) setSelectedCategory(null);
-        needsUpdate = true;
+      setSelectedSkill(skillFromUrl);
+      if (selectedCategory() !== null) setSelectedCategory(null);
+      needsUpdate = true;
     }
     if (!skillFromUrl && categoryFromUrl !== selectedCategory()) {
-        setSelectedCategory(categoryFromUrl);
-        if(selectedSkill() !== null) setSelectedSkill(null);
-        needsUpdate = true;
+      setSelectedCategory(categoryFromUrl);
+      if (selectedSkill() !== null) setSelectedSkill(null);
+      needsUpdate = true;
     }
 
     // Optional: Trigger animation if state changed due to URL update
@@ -145,68 +144,93 @@ export default function Projects() {
           My Projects
         </h1>
         <p class="text-lg text-center max-w-3xl mx-auto mb-12">
-          Here are some of the projects I've worked on. Select a category or skill to filter.
+          Here are some of the projects I've worked on. Select a category or
+          skill to filter.
         </p>
 
         <div class="flex flex-wrap justify-center items-center gap-x-4 gap-y-3 mb-12">
           <div class="flex flex-wrap justify-center gap-3">
-             <For each={CATEGORIES}>
-               {(category) => (
-                 <button
-                   type="button"
-                   class="btn btn-sm rounded-full"
-                   classList={{
-                     'btn-primary': selectedCategory() === category || (category === 'All' && !selectedCategory() && !selectedSkill()),
-                     'btn-ghost': !(selectedCategory() === category || (category === 'All' && !selectedCategory() && !selectedSkill())),
-                   }}
-                   onClick={() => handleCategoryChange(category)}
-                 >
-                   {category}
-                 </button>
-               )}
-             </For>
+            <For each={CATEGORIES}>
+              {(category) => (
+                <button
+                  type="button"
+                  class="btn btn-sm rounded-full"
+                  classList={{
+                    'btn-primary':
+                      selectedCategory() === category ||
+                      (category === 'All' &&
+                        !selectedCategory() &&
+                        !selectedSkill()),
+                    'btn-ghost': !(
+                      selectedCategory() === category ||
+                      (category === 'All' &&
+                        !selectedCategory() &&
+                        !selectedSkill())
+                    ),
+                  }}
+                  onClick={() => handleCategoryChange(category)}
+                >
+                  {category}
+                </button>
+              )}
+            </For>
           </div>
 
           <div class="dropdown dropdown-end" id="skill-dropdown">
-            <button 
-                type="button"
-                tabindex="0" 
-                class="btn btn-sm rounded-full m-1" 
-                classList={{
-                    'btn-primary': !!selectedSkill(), 
-                    'btn-outline': !selectedSkill()
-                }}
-                aria-haspopup="true" 
-                aria-expanded={false} 
+            <button
+              type="button"
+              tabindex="0"
+              class="btn btn-sm rounded-full m-1"
+              classList={{
+                'btn-primary': !!selectedSkill(),
+                'btn-outline': !selectedSkill(),
+              }}
+              aria-haspopup="true"
+              aria-expanded={false}
             >
-              {selectedSkill() || "Filter by Skill"} 
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 fill-current" viewBox="0 0 20 20" aria-hidden="true">
-                 <title>Open skill filter menu</title> 
-                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+              {selectedSkill() || 'Filter by Skill'}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 ml-1 fill-current"
+                viewBox="0 0 20 20"
+                aria-hidden="true"
+              >
+                <title>Open skill filter menu</title>
+                <path
+                  fill-rule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                />
               </svg>
             </button>
-            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-box w-52 max-h-60  overflow-y-auto flex-nowrap">
-               <li>
-                <button 
-                    type="button" 
-                    onClick={() => handleSkillChange(null)} 
-                    class="text-left w-full truncate"
-                    classList={{'text-primary font-bold': !selectedSkill()}}
-                 >
-                     Clear Skill Filter
-                 </button>
+            <ul
+              tabindex="0"
+              class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-box w-52 max-h-60  overflow-y-auto flex-nowrap"
+            >
+              <li>
+                <button
+                  type="button"
+                  onClick={() => handleSkillChange(null)}
+                  class="text-left w-full truncate"
+                  classList={{ 'text-primary font-bold': !selectedSkill() }}
+                >
+                  Clear Skill Filter
+                </button>
               </li>
               <For each={SKILLS}>
                 {(skill) => (
                   <li>
-                    <button 
-                        type="button" 
-                        onClick={() => handleSkillChange(skill.name)} 
-                        class="text-left w-full truncate"
-                        classList={{'text-primary font-bold': selectedSkill() === skill.name}}
-                     >
-                       {skill.name}
-                     </button>
+                    <button
+                      type="button"
+                      onClick={() => handleSkillChange(skill.name)}
+                      class="text-left w-full truncate"
+                      classList={{
+                        'text-primary font-bold':
+                          selectedSkill() === skill.name,
+                      }}
+                    >
+                      {skill.name}
+                    </button>
                   </li>
                 )}
               </For>
@@ -218,7 +242,7 @@ export default function Projects() {
           <For each={filteredProjects()}>
             {(project) => (
               <div
-                class="project-card bg-base-100 rounded-xl shadow-lg overflow-hidden transition-all duration-300 h-full flex flex-col"
+                class="opacity-0 project-card bg-base-100 rounded-xl shadow-lg overflow-hidden transition-all duration-300 h-full flex flex-col"
                 classList={{
                   'transform -translate-y-2 shadow-xl':
                     hoveredProject() === project.id,
@@ -227,7 +251,7 @@ export default function Projects() {
                 onMouseEnter={() => setHoveredProject(project.id)}
                 onMouseLeave={() => setHoveredProject(null)}
               >
-                 <div class="p-6 flex flex-col flex-grow">
+                <div class="p-6 flex flex-col flex-grow">
                   <div class="flex justify-between items-start mb-3">
                     <h2 class="text-xl font-bold">{project.title}</h2>
                     {project.featured && (
@@ -237,7 +261,9 @@ export default function Projects() {
                     )}
                   </div>
 
-                  <p class="mb-4 text-neutral/80 flex-grow">{project.description}</p>
+                  <p class="mb-4 text-neutral/80 flex-grow">
+                    {project.description}
+                  </p>
 
                   <div class="flex flex-wrap gap-2 mb-6">
                     <For each={project.technologies}>
@@ -261,7 +287,7 @@ export default function Projects() {
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         role="img"
-                        aria-hidden="true" 
+                        aria-hidden="true"
                         class="w-5 h-5 mr-2"
                       >
                         <path
@@ -281,7 +307,7 @@ export default function Projects() {
                           role="img"
                           aria-label="GitHub Stars"
                         >
-                           <path
+                          <path
                             fill="currentColor"
                             d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"
                           />
