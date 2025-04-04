@@ -148,7 +148,7 @@ export default function Projects() {
           Here are some of the projects I've worked on. Select a category or skill to filter.
         </p>
 
-        <div class="flex flex-wrap justify-center items-center gap-4 mb-12">
+        <div class="flex flex-wrap justify-center items-center gap-x-4 gap-y-3 mb-12">
           <div class="flex flex-wrap justify-center gap-3">
              <For each={CATEGORIES}>
                {(category) => (
@@ -171,10 +171,13 @@ export default function Projects() {
             <button 
                 type="button"
                 tabindex="0" 
-                class="btn btn-sm rounded-full m-1 btn-outline"
-                classList={{ 'btn-primary': !!selectedSkill() }}
-                aria-haspopup="true"
-                aria-expanded={false}
+                class="btn btn-sm rounded-full m-1" 
+                classList={{
+                    'btn-primary': !!selectedSkill(), 
+                    'btn-outline': !selectedSkill()
+                }}
+                aria-haspopup="true" 
+                aria-expanded={false} 
             >
               {selectedSkill() || "Filter by Skill"} 
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 fill-current" viewBox="0 0 20 20" aria-hidden="true">
@@ -182,12 +185,12 @@ export default function Projects() {
                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
               </svg>
             </button>
-            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box w-52 max-h-60 overflow-y-auto">
-              <li>
+            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-box w-52 max-h-60  overflow-y-auto flex-nowrap">
+               <li>
                 <button 
                     type="button" 
                     onClick={() => handleSkillChange(null)} 
-                    class="btn btn-sm btn-ghost justify-start w-full text-left font-normal" 
+                    class="text-left w-full truncate"
                     classList={{'text-primary font-bold': !selectedSkill()}}
                  >
                      Clear Skill Filter
@@ -199,7 +202,7 @@ export default function Projects() {
                     <button 
                         type="button" 
                         onClick={() => handleSkillChange(skill.name)} 
-                        class="btn btn-sm btn-ghost justify-start w-full text-left font-normal" 
+                        class="text-left w-full truncate"
                         classList={{'text-primary font-bold': selectedSkill() === skill.name}}
                      >
                        {skill.name}
