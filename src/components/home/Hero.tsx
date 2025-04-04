@@ -260,7 +260,7 @@ export default function Hero() {
           <h1 class="text-5xl md:text-7xl font-bold mb-4 text-gradient">
             Arthur Geron
           </h1>
-          <h2 class="text-xl md:text-2xl mb-8 text-neutral-content">
+          <h2 class="text-xl md:text-2xl mb-8 text-secondary inline-block px-4 py-2 glass rounded">
             Web3 & React Developer / Contributor
           </h2>
           <p class="max-w-2xl mx-auto text-lg mb-8">
