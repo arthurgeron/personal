@@ -261,7 +261,7 @@ export default function Hero() {
             Arthur Geron
           </h1>
           <h2 class="text-xl md:text-2xl mb-8 text-neutral-content">
-            Web3 & React Developer | Fuel Network Contributor
+            Web3 & React Developer / Contributor
           </h2>
           <p class="max-w-2xl mx-auto text-lg mb-8">
             Building the decentralized future with modern web technologies.

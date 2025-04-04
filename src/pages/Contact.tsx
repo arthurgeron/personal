@@ -75,11 +75,6 @@ export default function Contact() {
                 </p>
                 <SocialLinks />
               </div>
-
-              <div>
-                <h3 class="font-bold mb-3">Location</h3>
-                <p>Fuel Labs, Remote</p>
-              </div>
             </div>
 
             <div>
