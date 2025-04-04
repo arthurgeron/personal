@@ -5,7 +5,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer class="bg-neutral text-neutral-content">
+    <footer class="bg-base-300 text-base-content border-t border-base-content/10">
       <div class="container-custom py-10">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
@@ -57,7 +57,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div class="border-t border-neutral-content/20 pt-6 flex flex-col sm:flex-row justify-between items-center">
+        <div class="border-t border-base-content/20 pt-6 flex flex-col sm:flex-row justify-between items-center">
           <p>© {currentYear} Arthur Geron. All rights reserved.</p>
           <p class="text-sm mt-2 sm:mt-0">Built with SolidJS + Rspack + Bun</p>
         </div>
