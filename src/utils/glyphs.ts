@@ -472,7 +472,7 @@ export function initGlyphs(
     gl.uniform1f(
       uniform.uAlpha,
       clamp(0.34 * (def / count()) ** 0.3, 0.1, 0.5) *
-        (theme === 'light' ? 1.7 : 1.3),
+        (theme === 'light' ? 1.7 : 0.5),
     );
     gl.uniform3fv(uniform.uC, PALETTE[theme]);
     gl.drawArrays(gl.POINTS, 0, words + Math.min(count(), max));
