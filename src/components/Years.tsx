@@ -3,6 +3,8 @@ import { CAREER, ERAS } from '../constants/career';
 import { scrollBehavior, still } from '../utils/session';
 
 const DIP_MS = 210;
+// the data is newest first, as a CV lists it, and the page tells it oldest first
+const STORY = [...CAREER].reverse();
 
 const Years = () => {
   const [active, setActive] = createSignal(0);
@@ -28,7 +30,7 @@ const Years = () => {
   };
 
   const jumpTo = (era: number) =>
-    rows[CAREER.findIndex((row) => row.era === era)]?.scrollIntoView({
+    rows[STORY.findIndex((row) => row.era === era)]?.scrollIntoView({
       block: 'center',
       behavior: scrollBehavior(),
     });
@@ -66,9 +68,9 @@ const Years = () => {
             came with them.
           </h2>
           <p class="body">
-            Scroll back through them. Each row is what I was shipping, and the
-            card that follows you is restyled the way we all swore was the
-            future that year.
+            Start in 2013 and scroll forward. Each row is what I was shipping.
+            The card that follows you is one profile card, redrawn in the style
+            we all swore was the future that year.
           </p>
         </div>
       </div>
@@ -77,30 +79,30 @@ const Years = () => {
           class="era"
           classList={{ live: live() }}
           ref={card}
-          data-era={CAREER[active()].era}
-          data-f={CAREER[shown()].era}
+          data-era={STORY[active()].era}
+          data-f={STORY[shown()].era}
           aria-hidden="true"
         >
           <div class="estage">
             <div class="ebg">
               <For each={ERAS}>{() => <i />}</For>
             </div>
-            <span class="eyear">{CAREER[shown()].year}</span>
+            <span class="eyear">{STORY[shown()].year}</span>
             <div class="ecard">
               <div class="eav">AG</div>
               <div class="eid">
                 <b>Arthur Geron</b>
-                <span>{CAREER[shown()].card}</span>
+                <span>{STORY[shown()].card}</span>
               </div>
               <a class="ebtn" href="#contact" tabindex="-1">
-                <span>{ERAS[CAREER[shown()].era].button}</span>
+                <span>{ERAS[STORY[shown()].era].button}</span>
               </a>
             </div>
           </div>
           <div class="ectl">
             <p class="eq">
-              <small>Meanwhile, on the web</small>
-              <span>{ERAS[CAREER[shown()].era].quote}</span>
+              <small>The design trend that year</small>
+              <span>{ERAS[STORY[shown()].era].quote}</span>
             </p>
             <div class="eticks">
               <For each={ERAS}>
@@ -108,7 +110,7 @@ const Years = () => {
                   <button
                     type="button"
                     tabindex="-1"
-                    classList={{ on: CAREER[active()].era === i() }}
+                    classList={{ on: STORY[active()].era === i() }}
                     onClick={[jumpTo, i()]}
                   >
                     {era.year}
@@ -119,7 +121,7 @@ const Years = () => {
           </div>
         </div>
         <ol class="tl">
-          <For each={CAREER}>
+          <For each={STORY}>
             {(row, i) => (
               // biome-ignore lint/a11y/useKeyWithClickEvents: the click is a pointer shortcut, and keyboard focus inside a row activates it through focusin
               <li

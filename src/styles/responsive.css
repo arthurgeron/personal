@@ -66,14 +66,16 @@
   .ectl {
     padding: 8px 12px;
   }
-  .eticks,
-  .eq small {
+  .eticks {
     display: none;
+  }
+  .eq small {
+    margin-bottom: 2px;
   }
   .eq {
     font-size: 13px;
     min-height: 0;
-    height: 2.7em;
+    height: calc(2.7em + 16px);
     overflow: hidden;
   }
   .calscroll > * {
