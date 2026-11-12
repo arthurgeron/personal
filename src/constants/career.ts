@@ -105,7 +105,7 @@ export const CAREER: CareerRow[] = [
     role: 'Mobile Lead',
     headline:
       'Promoted a second time, 19 months after joining, to lead the tech leads of every mobile squad.',
-    body: 'Reviewed all new mobile code and shipped the App Store and Play Store releases. When a dependency broke, the fix went upstream, in ten merged pull requests: the Amazon IVS player, Stream Chat, react-native-iap and Reanimated.',
+    body: 'Reviewed all new mobile code and shipped the App Store and Play Store releases. When a dependency broke, the fix went upstream, in eight merged pull requests: the Amazon IVS player, Stream Chat, react-native-iap and Reanimated.',
     results: [
       {
         figure: '698 ms to 219 ms',
