@@ -50,6 +50,8 @@ const client = defineConfig({
   },
   output: {
     clean: true,
+    // files are cached for a week, so a new build needs new names or returning visitors hydrate new HTML with old code
+    filename: dev ? '[name].js' : '[name].[contenthash:8].js',
   },
   resolve: {
     extensions,
