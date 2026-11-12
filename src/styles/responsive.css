@@ -8,6 +8,8 @@
   .hero-foot,
   .duo,
   .duo2,
+  .chain,
+  .desk,
   .fin,
   .demo,
   .oss,
@@ -23,6 +25,11 @@
   }
   .duo2 #s3 {
     order: -1;
+  }
+  .pool {
+    height: auto;
+    grid-auto-flow: column;
+    justify-content: space-between;
   }
   .when li {
     grid-template-columns: minmax(0, 1fr);

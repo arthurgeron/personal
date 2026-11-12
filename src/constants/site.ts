@@ -131,7 +131,6 @@ export const SERVICES = [
   },
 ];
 
-export const TX_IDLE = 'Simulated devnet. Nothing leaves this page.';
 export const DEMO_SIZES = [
   { cols: 24, rows: 14 },
   { cols: 60, rows: 35 },

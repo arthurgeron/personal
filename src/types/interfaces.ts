@@ -84,6 +84,13 @@ export interface Command {
   run: () => void;
 }
 
+export interface Block {
+  height: number;
+  hash: string;
+  tx: string;
+  orphan?: boolean;
+}
+
 export interface Glyphs {
   build: () => void;
   place: () => void;
