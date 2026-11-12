@@ -71,17 +71,19 @@
   mask-image: linear-gradient(90deg, #0000, #000 56px);
 }
 .blocks {
-  --step: 134px;
+  --card: 120px;
+  --gap: 14px;
+  --step: calc(var(--card) + var(--gap));
   display: flex;
   justify-content: flex-end;
-  gap: 14px;
+  gap: var(--gap);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 .blocks li {
   position: relative;
-  flex: 0 0 120px;
+  flex: 0 0 var(--card);
   background: var(--panel);
   transition: border-color .3s, transform .4s, opacity .4s;
 }
@@ -90,7 +92,7 @@
   position: absolute;
   top: 14px;
   right: 100%;
-  width: 14px;
+  width: var(--gap);
   border-top: 1px solid var(--mute);
 }
 .blocks b {
@@ -109,7 +111,7 @@
   display: none;
 }
 .blocks .orphan + li::before {
-  width: calc(var(--step) + 14px);
+  width: calc(var(--step) + var(--gap));
 }
 .blocks .orphan code,
 .blocks .orphan .chip {

@@ -71,8 +71,8 @@ const Devnet = () => {
   return (
     <div class="devnet" ref={panel}>
       <p class="eyebrow">
-        A chain running in this tab · one block every 2 seconds · every hash is
-        a real SHA-256 over its parent
+        A chain running in this tab · one block every {BLOCK_MS / 1000} seconds
+        · every hash is a real SHA-256 over its parent
       </p>
       <div class="chain">
         <div class="pool">

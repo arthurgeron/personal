@@ -115,7 +115,7 @@ export const createDevnet = () => {
 
   // blocks are sealed one at a time, so two callers never build on the same tip
   const mine = () => {
-    queue = queue.then(step);
+    queue = queue.then(step).catch(console.error);
     return queue;
   };
 
@@ -123,10 +123,14 @@ export const createDevnet = () => {
     while (still() && moving()) await mine();
   };
 
-  const send = () => {
+  const send = async () => {
     if (!ready()) return;
     setState('phase', 'signing');
     say('signature', 'Waiting for your signature. Nothing is sent yet.');
+    setState(
+      'id',
+      `0x${await sha256(JSON.stringify({ ...TRANSFER, nonce: state.nonce }))}`,
+    );
   };
 
   const reject = () => {
@@ -134,12 +138,11 @@ export const createDevnet = () => {
     say('rejected', 'Rejected in the wallet. Nothing was sent.');
   };
 
-  const approve = async () => {
-    const id = `0x${await sha256(JSON.stringify({ ...TRANSFER, nonce: state.nonce }))}`;
-    setState({ phase: 'pending', id });
+  const approve = () => {
+    setState('phase', 'pending');
     say(
       'pending',
-      `Signed as ${short(id)}. In the mempool, not in a block yet.`,
+      `Signed as ${short(state.id)}. In the mempool, not in a block yet.`,
     );
     pulse();
     drain();
