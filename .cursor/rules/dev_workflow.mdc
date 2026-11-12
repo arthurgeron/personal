@@ -1,57 +1,20 @@
 ---
-description: 
+description: Commands, checks before committing, and how deploys happen
 globs: 
 alwaysApply: false
 ---
-# Development Workflow: Arthur Geron's Portfolio
+# Development workflow
 
-## Core Commands
-- **Start Development Server:** `bun run dev`
-- **Build Production Version:** `bun run build`
-- **Format Code:** `bun run format`
-- **Lint Code:** `bun run check`
+## Commands
+- `bun run dev` starts the development server on `localhost:3030`.
+- `bun run build` bundles the client and prerenders into `dist`.
+- `bun run check` runs Biome with fixes. `bun run format` only formats.
+- `bun run stats` refreshes `src/data/stats.json` and needs `GH_TOKEN`.
 
-## Environment Requirements
-- Bun 1.2.6 or higher
-- Node.js 23.10.0 (as specified in `.tool-versions`)
+## Before committing
+- `bun run check`, `bunx tsc --noEmit` and `bun run build` all pass.
+- A change to anything visible is checked in the built page, in the dark and light themes, at desktop and phone widths.
 
-## Development Server
-- Runs on `localhost:3000` by default
-- Features hot module replacement via `solid-refresh`
-- Watches for file changes and updates the browser automatically
-
-## Code Organization
-- Follow the established project structure
-- Keep components grouped by their purpose (`layout/`, `home/`, `shared/`, etc.)
-- New pages should be added to both:
-  - `src/pages/` directory
-  - `App.tsx` with a corresponding route
-
-## Styling Workflow
-- Use TailwindCSS utility classes as the primary styling method
-- For complex components, start with DaisyUI base components
-- Define custom styles in `tailwind.config.js` if needed
-- Use the defined color palette for consistency
-
-## Animation Development
-- For simple transitions, use CSS transitions/Tailwind utilities
-- For complex animations, utilize GSAP or Motion One
-- Test animations on different devices/browsers for performance
-- Always clean up animation resources in the `onCleanup` hook
-
-## Type Safety
-- Ensure components have proper TypeScript typing for props
-- Use interfaces for complex data structures
-- Leverage TypeScript's type checking for safer code
-
-## Build Process
-- The production build process is handled by Rspack
-- Outputs optimized assets to the `dist/` directory
-- Includes code-splitting for better performance
-- Minifies JavaScript and CSS for smaller file sizes
-
-## Code Quality
-- Run `bun run format` before committing changes
-- Biome handles both formatting and linting
-- Fix any linting errors before submitting code
-- Follow the established code style and conventions 
+## Deploys
+- Every push to `main` deploys to production over FTP and replaces the remote folder. A daily scheduled run rebuilds with fresh stats.
+- The workflow holds only the repository's read-only token. Never add a personal token as a secret. Totals that include private repositories are refreshed locally and committed.

@@ -1,188 +1,33 @@
 ---
-description: 
+description: Where code lives and what belongs in each folder
 globs: 
 alwaysApply: true
 ---
-# Project Structure: Arthur Geron's Portfolio
+# Project structure
 
-## Current Directory Structure
 ```
-arthur-geron-portfolio/
-├── src/
-│   ├── components/             # Reusable UI components
-│   │   ├── layout/             # Layout structure components
-│   │   │   ├── Layout.tsx      # Main layout wrapper
-│   │   │   ├── Header.tsx      # Site header with navigation
-│   │   │   └── Footer.tsx      # Site footer
-│   │   ├── home/               # Home page specific components
-│   │   │   ├── Hero.tsx        # Hero section with particle background
-│   │   │   ├── About.tsx       # About section on home page
-│   │   │   ├── Skills.tsx      # Skills showcase section
-│   │   │   └── Projects.tsx    # Featured projects section
-│   │   ├── shared/             # Shared components used across pages
-│   │   │   ├── SocialLinks.tsx # Social media links component
-│   │   │   └── ThemeToggle.tsx # Dark/light theme switcher
-│   │   └── portfolio/          # Portfolio-related components (may be empty currently)
-│   ├── pages/                  # Top-level page components
-│   │   ├── Home.tsx            # Homepage combining multiple sections
-│   │   ├── About.tsx           # Detailed about page
-│   │   ├── Projects.tsx        # Projects showcase page
-│   │   ├── Contact.tsx         # Contact form page
-│   │   └── NotFound.tsx        # 404 error page
-│   ├── assets/                 # Static assets
-│   │   └── (images, icons)
-│   ├── data/                   # Data files (may be empty/planned)
-│   ├── utils/                  # Utility functions (may be empty/planned) 
-│   ├── App.tsx                 # Main application component with routing
-│   ├── index.tsx               # Application entry point
-│   ├── index.css               # Global styles and Tailwind imports
-│   └── types.d.ts              # TypeScript type declarations
-├── public/                     # Static files served directly
-├── dist/                       # Build output directory
-├── node_modules/               # Dependencies
-├── index.html                  # HTML template
-├── package.json                # Dependencies and scripts
-├── tsconfig.json               # TypeScript configuration
-├── rspack.config.ts            # Bundler configuration
-├── postcss.config.js           # PostCSS configuration
-├── tailwind.config.js          # TailwindCSS theme configuration
-├── biome.json                  # Linting/formatting configuration
-├── .babelrc                    # Babel configuration
-└── .tool-versions              # Tool versions specification
-```
-### Types Constants and Utils
-- Types, constants and utils can be either local to the respective component, and global when used on other modules
+index.html              HTML template: meta tags, JSON-LD, the inline script that restores theme and contrast
+rspack.config.ts        two builds: the client bundle and the prerender bundle
+scripts/prerender.ts    renders the page into dist/index.html
+scripts/fetch-stats.ts  refreshes src/data/stats.json from GitHub and npm
+public/                 files copied to dist as they are
 src/
-├── types/
-│   └── interfaces.ts
-├── constants/
-│   └── parseNumber.ts
-└── components/
-    └── Home/
-        └── Home.tsx
-        └── constants.ts
-        └── utils.ts
-        └── interfaces.ts
-
-## Key Component Organization
-
-### Page Structure
-- Each page is a top-level component in `src/pages/`
-- Pages import and compose section components from relevant folders
-- Lazy loading is implemented for all page components in `App.tsx`
-
-### Component Hierarchy
-- `Layout`: Wrapper for all pages, includes Header and Footer
-- Section components (`Hero`, `About`, etc.): Page-specific sections
-- Shared components: Reusable across multiple sections/pages
-
-### Routing
-Defined in `App.tsx` using `@solidjs/router`:
-- `/` - Home page
-- `/about` - About page
-- `/projects` - Projects showcase
-- `/contact` - Contact form
-- `/*` - NotFound (404) page 
-
-## Best Practices for Code Organization
-
-### Data and Types Separation
-- **Types**: Always define interfaces and types in dedicated files:
-  - Global types in `src/types/interfaces.ts`
-  - Component-specific types in `./component-name/interfaces.ts`
-- **Constants**: Store non-reactive data outside components:
-  - Global constants in `src/constants/index.ts`
-  - Feature-specific constants in `./feature-name/constants.ts`
-- **Utils**: Keep utility functions separated from components:
-  - Global utility functions in `src/utils/index.ts`
-  - Feature-specific utilities in `./feature-name/utils.ts`
-
-### Component File Guidelines
-- Component files (*.tsx) should:
-  - Import types, constants, and utilities from dedicated files
-  - Focus only on component logic, JSX structure, and SolidJS reactivity
-  - Not contain static data structures or pure functions unrelated to component logic
-  - Be kept under 200 lines when possible; extract complex logic when needed
-
-### Module Organization Example
-```typescript
-// Good organization for a feature module
-feature/
-├── index.tsx              // Main component export
-├── FeatureComponent.tsx   // Component implementation
-├── interfaces.ts          // Types for this feature
-├── constants.ts           // Constants for this feature
-└── utils.ts               // Utility functions
-```
+  App.tsx               composes the sections in page order
+  index.tsx             client entry, hydrates
+  entry-server.tsx      prerender entry
+  index.css             @import list only
+  components/           one component per section, plus Hud, Palette, Xray
+  constants/            copy and static data
+  styles/               one stylesheet per section
+  types/interfaces.ts   shared types
+  utils/                signals, formatting and the imperative code
+  data/stats.json       generated, never edited by hand
 ```
 
-## For solidjs_practices.mdc
-
-```markdown
-## Code Organization and Data Management
-
-### Data Declaration Patterns
-
-- **Static Data**: Unlike React, SolidJS components only run once, not on every update. However, for maintainability and reusability:
-  ```typescript
-  // CORRECT: Declare outside of component scope
-  const ITEMS = ['item1', 'item2', 'item3'];
-  
-  function MyComponent() {
-    return <For each={ITEMS}>{item => <div>{item}</div>}</For>;
-  }
-  
-  // AVOID: Don't declare static data inside components
-  function MyComponent() {
-    const items = ['item1', 'item2', 'item3']; // Unnecessarily scoped to component
-    return <For each={items}>{item => <div>{item}</div>}</For>;
-  }
-  ```
-
-- **Module Structure**: Place related items in dedicated files:
-  ```typescript
-  // constants.ts
-  export const ITEMS = ['item1', 'item2', 'item3'];
-  
-  // interfaces.ts
-  export interface Item {
-    id: string;
-    name: string;
-  }
-  
-  // Component.tsx
-  import { ITEMS } from './constants';
-  import { Item } from './interfaces';
-  ```
-
-### When to Use Component-Scoped Data
-
-- Reserve component-scoped data for:
-  - Data derived from props
-  - Data used with reactive primitives (signals, stores)
-  - Values that genuinely need component-level isolation
-
-- Example of appropriate component-scoped data:
-  ```typescript
-  function DataProcessor(props) {
-    // Properly scoped: derived from props
-    const processedData = createMemo(() => {
-      return props.items.map(item => transformItem(item));
-    });
-    
-    return <DataDisplay data={processedData()} />;
-  }
-  ```
-
-### Benefits of Separation in SolidJS
-
-- Improves code organization and maintainability
-- Makes data and types reusable across components
-- Supports better testing isolation
-- Prevents potential memory issues with large data structures
-- Creates clear boundaries between presentation and data
-```
-
-These additions to your documentation will help prevent the issues we found and provide clear guidelines for code organization in your SolidJS project.
-
-
+## Placement
+- Copy and static data go in `src/constants`. Components import them.
+- Pure functions go in `src/utils`. Shared signals and mutable session state live in `src/utils/session.ts`.
+- Types shared by more than one file go in `src/types/interfaces.ts`.
+- A constant or helper used by one component only, and a few lines long, stays in that component.
+- Keep components under 200 lines. Move data and pure helpers out before splitting the JSX.
+- Imperative code that owns a canvas or a foreign runtime stays out of components: `glyphs.ts` (WebGL2 code rain), `reactDemo.ts` (the React 18 island), `loop.ts` and `engine.ts` (the frame loop and its wiring), `cv.ts` (the PDF).

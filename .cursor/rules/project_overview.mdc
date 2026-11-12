@@ -1,42 +1,16 @@
 ---
-description: 
+description: What the site is and the rules every change follows
 globs: 
 alwaysApply: true
 ---
-# Project Overview: Arthur Geron's Personal Website
+# Project overview
 
-## Description
-Arthur Geron's personal website is a modern, well-animated portfolio designed to showcase his skills and experience as a software engineer, focusing on his expertise in Web3, React development, and Fuel Network contributions.
+arthurgeron.com is Arthur Geron's consulting site: one prerendered SolidJS page, served as static files. There is no server and no router.
 
-## Goals
-- Create a professional, visually appealing portfolio website
-- Highlight technical skills with an emphasis on Web3 & React
-- Showcase projects and experience
-- Implement smooth animations and interactive elements
-- Provide easy contact options for potential opportunities
-
-## Target Persona: Arthur Geron
-Arthur Geron is a software engineer specializing in:
-- Web3 development & blockchain technologies
-- React and React Native development
-- Web3 contributor
-- ESLint plugin development (notably ESLint Plugin for React useMemo)
-- Frontend architecture and performance optimization
-
-## Key Features
-- Responsive design optimized for all device sizes
-- Animated particle background on the hero section
-- Dark/light theme toggle based on user preference
-- Interactive project cards
-- Smooth page transitions and scroll animations
-- Social links to GitHub and other platforms
-- Contact form for direct communication
-
-## Implementation
-The site is built using modern web technologies with a focus on performance and clean design:
-- SolidJS for UI rendering and reactivity
-- TailwindCSS with DaisyUI for styling
-- GSAP and Motion One for animations
-- Rspack for efficient bundling
-- TypeScript for type safety 
-- Almost never use comments, the code should speak for itself.
+## Invariants
+- The page must read and navigate without JavaScript. `scripts/prerender.ts` writes the full HTML into `dist/index.html` and the client hydrates it.
+- Every figure on the page comes from `src/data/stats.json` or from a constant. Never hardcode a GitHub or npm number in a component.
+- Only public work is named or linked. Private repositories appear as counts.
+- The generated CV carries no e-mail address and no phone number.
+- Almost never use comments. Keep one only for a constraint the code cannot express.
+- Structure is in `project_structure.mdc`, commands in `dev_workflow.mdc`, the stack in `tech_stack.mdc`.

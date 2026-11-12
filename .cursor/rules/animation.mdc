@@ -1,108 +1,14 @@
 ---
-description: Animation Strategy
+description: Motion and animation rules
 globs: 
 alwaysApply: false
 ---
-# Animation Strategy: Arthur Geron's Portfolio
+# Animation
 
-## Animation Libraries
-The project uses a combination of animation libraries:
-
-- **GSAP (GreenSock Animation Platform):** For complex animations
-  - ScrollTrigger plugin for scroll-based animations
-  - Used in components like Home.tsx
-
-- **Motion One (solid-motionone):** For declarative animations
-  - Provides SolidJS integrations 
-  - Used for hover animations, transitions, and reactive animations
-
-- **Split Type:** For text animations
-  - Splits text into characters, words, or lines
-  - Often used with GSAP for text reveal effects
-
-- **CSS Animations:** Through Tailwind's animation utilities
-  - Custom animations defined in tailwind.config.js
-  - Example: `animation: { 'gradient-x': 'gradient-x 15s ease infinite' }`
-
-## Implementation Patterns
-
-### Canvas-based Particle Animation (Hero.tsx)
-- Interactive background created with HTML5 Canvas API
-- Particles move with subtle randomization
-- Connection lines drawn between nearby particles
-- Proper cleanup on component unmount:
-  ```tsx
-  onCleanup(() => {
-    cancelAnimationFrame(animationFrame);
-    window.removeEventListener('resize', resizeCanvas);
-  });
-  ```
-
-### Fade-in Animations
-Home page uses fade-in animation on initial load:
-```tsx
-const [isLoaded, setIsLoaded] = createSignal(false);
-  
-onMount(() => {
-  const timeout = setTimeout(() => setIsLoaded(true), 100);
-  onCleanup(() => clearTimeout(timeout));
-});
-
-return (
-  <div 
-    class="min-h-screen" 
-    classList={{ 'opacity-0': !isLoaded(), 'opacity-100 transition-opacity duration-1000': isLoaded() }}
-  >
-    {/* Content */}
-  </div>
-);
-```
-
-### Motion One Animation Setup
-Motion One is used for reactive animations that respond to state changes:
-```tsx
-import { Motion } from 'solid-motionone';
-
-<Motion.div
-  animate={{
-    scale: hoveredSkill() === skill.name ? 1.05 : 1,
-  }}
-  transition={{ duration: 0.2 }}
->
-  {skill.name}
-</Motion.div>
-```
-
-### GSAP Animation Setup
-GSAP is imported and configured at the component level:
-```tsx
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
-```
-
-### CSS Transitions
-Used for subtle UI interactions like hover effects:
-```tsx
-<button 
-  onClick={toggleTheme}
-  class="p-2 rounded-full hover:bg-base-200 transition-colors duration-200"
-  aria-label={`Switch to ${theme() === 'light' ? 'dark' : 'light'} mode`}
->
-```
-
-## Best Practices
-- Register GSAP plugins at component level
-- Always clean up animations and event listeners in `onCleanup`
-- Prefer CSS transitions for simple state changes
-- Use requestAnimationFrame for canvas animations
-- Throttle resize handlers for performance
-- Conditionally apply animation classes with `classList`
-- Use delay parameter to stagger animations where appropriate
-- Use SolidJS's `<For>` component with Motion elements for lists
-- Avoid placing `key` attribute directly on Motion components 
-
-## Useful links
-- [Solid MotionOne](https://github.com/solidjs-community/solid-motionone)
-- [Motion One React Docs](https://motion.dev/docs/react-quick-start) . These are react docs because there are no official solid js docs, but it should be pretty similar.
+- There is no animation library. Motion is CSS (transitions, keyframes, scroll-driven timelines, view transitions) or the WebGL canvas.
+- One `requestAnimationFrame` loop exists, in `src/utils/loop.ts`. New per-frame work joins it instead of starting another loop.
+- The canvas draws every glyph as a point sprite in a single draw call. Per-glyph motion belongs in the vertex shader, never in a JavaScript loop over glyphs.
+- Every animation stops when `still()` is true. The Pause control sets it, and it starts true under `prefers-reduced-motion: reduce`. CSS animations are switched off under `.still` in `accessibility.css`.
+- Scroll-driven and view-transition effects sit behind `@supports` or a feature check, and the page works without them.
+- Work that only matters on screen is gated by an `IntersectionObserver`, as the render demo and the calendar do.
+- If WebGL2 is unavailable or draws nothing, the page falls back to HTML headings under the `nogl` class. Keep that path working.
