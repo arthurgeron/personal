@@ -302,7 +302,7 @@ a.ebtn {
   left: 4%;
   top: -150px;
   border-radius: 50%;
-  background: #ff7eb3;
+  background: #be185d;
   filter: blur(26px);
   animation: orbit 9s ease-in-out infinite alternate;
 }
@@ -311,7 +311,7 @@ a.ebtn {
   right: 4%;
   top: auto;
   bottom: -150px;
-  background: #7afcff;
+  background: #086f93;
   animation: orbit2 11s ease-in-out infinite alternate;
 }
 /* 2022 web3, a neon floor */
@@ -532,14 +532,14 @@ a.ebtn {
   box-shadow: inset 0 1px 0 0 #ffffff55, 0 8px 32px 0 #1f26875e, var(--z);
 }
 [data-era="5"] .eav {
-  --g1: #ffffff40;
-  --g2: #ffffff40;
+  --g1: #ffffff26;
+  --g2: #ffffff26;
   color: #fff;
   border-color: #ffffff66;
 }
 [data-era="5"] .ebtn {
-  --g1: #ffffff40;
-  --g2: #ffffff40;
+  --g1: #ffffff26;
+  --g2: #ffffff26;
   color: #fff;
   border-color: #ffffff80;
   border-radius: 12px;
