@@ -39,7 +39,7 @@
   gap: 18px;
   border: 1px solid var(--line);
   border-radius: 16px;
-  background: color-mix(in srgb, var(--panel) 88%, transparent);
+  background: color-mix(in srgb, var(--panel) 95%, transparent);
   font: 13px / 1.5 var(--mono);
 }
 .devnet .eyebrow {
