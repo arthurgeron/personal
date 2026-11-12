@@ -12,7 +12,7 @@ const PROOF = [
     value: () => stats.plugin.yearly,
   },
   {
-    label: 'characters of code this page will draw if you ask it to',
+    label: 'characters on screen at once when you max the slider in the corner',
     value: maxGlyphs,
   },
 ];
