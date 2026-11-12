@@ -1,0 +1,650 @@
+/* 13 years: one component, nine eras. colours, gradients and shadows are registered so every step interpolates */
+.era {
+  margin-top: 36px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.estage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  padding: 60px 16px;
+  min-height: 330px;
+  --ey: #fff;
+}
+.ebg,
+.ebg i,
+.ebg i::before,
+.ebg i::after {
+  position: absolute;
+  inset: 0;
+}
+.ebg i {
+  opacity: 0;
+  visibility: hidden;
+  overflow: hidden;
+  transition: opacity .8s, visibility 0s .8s;
+}
+.ebg i::before,
+.ebg i::after {
+  content: "";
+}
+.era:not(.live) .ebg i,
+.era:not(.live) .ebg i::before,
+.era:not(.live) .ebg i::after {
+  animation-play-state: paused !important;
+}
+.eyear {
+  position: absolute;
+  left: 18px;
+  bottom: 2px;
+  font: 900 clamp(4rem, 15vw, 10.5rem) / 1 var(--disp);
+  letter-spacing: -.04em;
+  color: var(--ey);
+  opacity: 0.13;
+  transition: color .7s;
+  pointer-events: none;
+}
+.ecard,
+.eav,
+.ebtn {
+  --z: 0 0 0 0 #0000;
+  background: linear-gradient(var(--ga), var(--g1), var(--g2));
+  border: 1px solid #0000;
+  transition:
+    --g1 .7s, --g2 .7s, --ga .7s, border-color .7s, border-radius .7s cubic-bezier(
+      0.3,
+      0.9,
+      0.3,
+      1
+    ), box-shadow .7s, color .7s, backdrop-filter .7s, -webkit-backdrop-filter .7s, letter-spacing .7s;
+}
+.ecard {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  width: min(440px, 100%);
+  flex-wrap: wrap;
+  box-shadow: inset var(--z), var(--z), var(--z);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+}
+.eav {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 15px;
+  flex: none;
+  box-shadow: inset var(--z), inset var(--z), var(--z);
+}
+.eid {
+  flex: 1;
+  min-width: 120px;
+  display: grid;
+  line-height: 1.3;
+}
+.eid b {
+  font-size: 17px;
+}
+.eid span {
+  font-size: 13px;
+  opacity: 0.75;
+}
+.ebtn {
+  padding: 10px 16px;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: inset var(--z), var(--z), var(--z);
+}
+.ebtn span {
+  display: inline-block;
+}
+.dip .eid,
+.dip .ebtn span,
+.dip .eq,
+.dip .eyear {
+  animation: dip .5s ease;
+}
+@keyframes dip {
+  40%,
+  48% {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateY(4px);
+  }
+}
+.ectl {
+  padding: 16px 20px 18px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 8px;
+  background: var(--panel);
+}
+.eticks {
+  display: flex;
+  justify-content: space-between;
+  margin-inline: -6px;
+}
+.eticks button {
+  all: unset;
+  font: 11px var(--mono);
+  color: var(--mute);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color .3s;
+}
+.eticks button:hover,
+.eticks button.on {
+  color: var(--gold);
+}
+.eticks button:focus-visible {
+  outline: 2px solid var(--ice);
+}
+.eq {
+  font: 500 clamp(1rem, 1.5vw, 1.15rem) / 1.35 var(--sans);
+  margin: 0;
+  min-height: 4.4em;
+}
+.eq small {
+  display: block;
+  font: 11px var(--mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: 6px;
+}
+a.ebtn {
+  text-decoration: none;
+}
+
+[data-era="0"] .ebg i:nth-child(1),
+[data-era="1"] .ebg i:nth-child(2),
+[data-era="2"] .ebg i:nth-child(3),
+[data-era="3"] .ebg i:nth-child(4),
+[data-era="4"] .ebg i:nth-child(5),
+[data-era="5"] .ebg i:nth-child(6),
+[data-era="6"] .ebg i:nth-child(7),
+[data-era="7"] .ebg i:nth-child(8),
+[data-era="8"] .ebg i:nth-child(9) {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .8s;
+}
+[data-era="1"] .estage,
+[data-era="4"] .estage,
+[data-era="7"] .estage {
+  --ey: #000;
+}
+[data-era="8"] .estage {
+  --ey: var(--fg);
+}
+/* 2013 stitched linen with a light sweep */
+.ebg i:nth-child(1) {
+  background: repeating-linear-gradient(45deg, #0000 0 2px, #0002 2px 3px),
+    repeating-linear-gradient(-45deg, #0000 0 2px, #fff1 2px 3px),
+    radial-gradient(120% 100% at 50% 0, #6b717c, #33363d);
+}
+.ebg i:nth-child(1)::before {
+  background: linear-gradient(105deg, #0000 42%, #ffffff2b 50%, #0000 58%);
+  transform: translateX(-100%);
+  animation: sweep 5s ease-in-out infinite;
+}
+.ebg i:nth-child(1)::after {
+  inset: 10px;
+  border: 2px dashed #ffffff30;
+  border-radius: 10px;
+}
+/* 2014 material ripples */
+.ebg i:nth-child(2) {
+  background: #eceff1;
+}
+.ebg i:nth-child(2)::before,
+.ebg i:nth-child(2)::after {
+  inset: auto;
+  width: 560px;
+  height: 560px;
+  margin: -280px;
+  left: 22%;
+  top: 50%;
+  border-radius: 50%;
+  background: #0096882e;
+  transform: scale(0);
+  animation: ripple 3.6s ease-out infinite;
+}
+.ebg i:nth-child(2)::after {
+  left: 80%;
+  background: #ff57222b;
+  animation-delay: 1.8s;
+}
+/* 2016 gradients on the move */
+.ebg i:nth-child(3) {
+  background: linear-gradient(135deg, #667eea, #764ba2, #fd6585, #667eea) 0 0 /
+    300% 300%;
+  animation: pan 9s ease-in-out infinite alternate;
+}
+.ebg i:nth-child(3)::before,
+.ebg i:nth-child(3)::after {
+  inset: auto;
+  width: 300px;
+  height: 300px;
+  left: -60px;
+  top: -90px;
+  border-radius: 50%;
+  background: #ffffff40;
+  filter: blur(40px);
+  animation: drift 8s ease-in-out infinite alternate;
+}
+.ebg i:nth-child(3)::after {
+  left: auto;
+  right: -60px;
+  top: auto;
+  bottom: -120px;
+  background: #38f9d74d;
+  animation-direction: alternate-reverse;
+}
+/* 2018 dark mode, a scan across a contribution grid */
+.ebg i:nth-child(4) {
+  background: radial-gradient(#30363d 1.2px, #0000 1.4px) 0 0 / 22px 22px,
+    #0d1117;
+}
+.ebg i:nth-child(4)::before {
+  background: radial-gradient(#3fb950 1.7px, #0000 1.9px) 0 0 / 22px 22px;
+  -webkit-mask: radial-gradient(closest-side, #000, #0000) 0 50% / 44% 150%
+    no-repeat;
+  mask: radial-gradient(closest-side, #000, #0000) 0 50% / 44% 150% no-repeat;
+  animation: scan 6s ease-in-out infinite alternate;
+}
+/* 2020 neumorphism, breathing */
+.ebg i:nth-child(5) {
+  background: #e0e5ec;
+}
+.ebg i:nth-child(5)::before {
+  inset: auto;
+  width: 220px;
+  height: 220px;
+  left: 6%;
+  top: -70px;
+  border-radius: 50%;
+  background: #e0e5ec;
+  box-shadow: 14px 14px 28px #a3b1c6, -14px -14px 28px #fff;
+  animation: breathe 5s ease-in-out infinite alternate;
+}
+.ebg i:nth-child(5)::after {
+  inset: auto;
+  width: 280px;
+  height: 130px;
+  right: 5%;
+  bottom: -36px;
+  border-radius: 65px;
+  box-shadow: inset 10px 10px 20px #a3b1c6, inset -10px -10px 20px #fff;
+  animation: breathe 6s ease-in-out infinite alternate-reverse;
+}
+/* 2021 glass, blobs passing behind the blur */
+.ebg i:nth-child(6) {
+  background: #5b5bd6;
+}
+.ebg i:nth-child(6)::before,
+.ebg i:nth-child(6)::after {
+  inset: auto;
+  width: 320px;
+  height: 320px;
+  left: 4%;
+  top: -150px;
+  border-radius: 50%;
+  background: #ff7eb3;
+  filter: blur(26px);
+  animation: orbit 9s ease-in-out infinite alternate;
+}
+.ebg i:nth-child(6)::after {
+  left: auto;
+  right: 4%;
+  top: auto;
+  bottom: -150px;
+  background: #7afcff;
+  animation: orbit2 11s ease-in-out infinite alternate;
+}
+/* 2022 web3, a neon floor */
+.ebg i:nth-child(7) {
+  background: radial-gradient(80% 60% at 50% 100%, #7c3aed66, #0000), #050507;
+}
+.ebg i:nth-child(7)::before {
+  inset: 52% -40% -20% -40%;
+  background: linear-gradient(#a855f7aa 1px, #0000 1px) 0 0 / 100% 30px,
+    linear-gradient(90deg, #a855f7aa 1px, #0000 1px) 0 0 / 30px 100%;
+  transform: perspective(260px) rotateX(62deg);
+  transform-origin: 50% 0;
+  animation: floor 1.1s linear infinite;
+}
+.ebg i:nth-child(7)::after {
+  inset: 52% 0 auto 0;
+  height: 2px;
+  background: linear-gradient(90deg, #0000, #03e1ff, #dc1fff, #0000);
+  box-shadow: 0 0 26px 3px #dc1fff99;
+}
+/* 2024 AI, aurora and sparkles */
+.ebg i:nth-child(8) {
+  background: #fafafa;
+}
+.ebg i:nth-child(8)::before {
+  inset: -45%;
+  background: conic-gradient(#c4b5fd, #f0abfc, #a5f3fc, #fde68a, #c4b5fd);
+  filter: blur(60px);
+  opacity: 0.6;
+  animation: spin 14s linear infinite;
+}
+.ebg i:nth-child(8)::after {
+  background: radial-gradient(circle at 12% 28%, #8b5cf6 0 2px, #0000 3px),
+    radial-gradient(circle at 84% 20%, #d946ef 0 2.5px, #0000 3.5px),
+    radial-gradient(circle at 70% 78%, #8b5cf6 0 2px, #0000 3px),
+    radial-gradient(circle at 24% 74%, #d946ef 0 1.5px, #0000 2.5px),
+    radial-gradient(circle at 48% 12%, #8b5cf6 0 1.5px, #0000 2.5px);
+  animation: twinkle 1.8s ease-in-out infinite alternate;
+}
+@keyframes sweep {
+  60%,
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes ripple {
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+@keyframes pan {
+  to {
+    background-position: 100% 100%;
+  }
+}
+@keyframes drift {
+  to {
+    transform: translate(240px, 130px);
+  }
+}
+@keyframes scan {
+  to {
+    -webkit-mask-position: 100% 50%;
+    mask-position: 100% 50%;
+  }
+}
+@keyframes breathe {
+  to {
+    transform: translateY(14px) scale(1.07);
+  }
+}
+@keyframes orbit {
+  to {
+    transform: translate(340px, 260px);
+  }
+}
+@keyframes orbit2 {
+  to {
+    transform: translate(-340px, -260px);
+  }
+}
+@keyframes floor {
+  to {
+    background-position: 0 30px, 0 0;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+@keyframes twinkle {
+  from {
+    opacity: 0.15;
+    transform: scale(0.98);
+  }
+}
+
+[data-era="0"] .ecard {
+  --g1: #fdfdfd;
+  --g2: #d2d6dc;
+  border-color: #6d7178;
+  border-radius: 9px;
+  box-shadow: inset 0 1px 0 0 #fff, 0 3px 8px 0 #0009, var(--z);
+  color: #2b2f36;
+}
+[data-era="0"] .eav {
+  --g1: #93602f;
+  --g2: #553213;
+  color: #fff;
+  border-color: #3d2410;
+  box-shadow: inset 0 1px 0 0 #fff6, inset var(--z), 0 1px 2px 0 #0008;
+}
+[data-era="0"] .ebtn {
+  --g1: #6fb0f6;
+  --g2: #1466d0;
+  border-color: #0d4a9c;
+  border-radius: 6px;
+  color: #fff;
+  box-shadow: inset 0 1px 0 0 #fff8, 0 1px 2px 0 #0006, var(--z);
+  font-weight: 700;
+}
+[data-era="1"] .ecard {
+  --g1: #fff;
+  --g2: #fff;
+  border-radius: 2px;
+  box-shadow: inset var(--z), 0 2px 2px 0 #0000003d, 0 0 2px 0 #0000001f;
+  color: #212121;
+}
+[data-era="1"] .eav {
+  --g1: #ff5722;
+  --g2: #ff5722;
+  color: #fff;
+}
+[data-era="1"] .ebtn {
+  --g1: #009688;
+  --g2: #009688;
+  color: #fff;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight: 500;
+  box-shadow: inset var(--z), 0 2px 5px 0 #00000042, var(--z);
+}
+[data-era="2"] .ecard {
+  --g1: #fff;
+  --g2: #fff;
+  border-radius: 18px;
+  box-shadow: inset var(--z), 0 24px 48px 0 #32325d66, var(--z);
+  color: #32325d;
+}
+[data-era="2"] .eav {
+  --ga: 135deg;
+  --g1: #43e97b;
+  --g2: #38f9d7;
+  color: #fff;
+}
+[data-era="2"] .ebtn {
+  --ga: 90deg;
+  --g1: #f6a13c;
+  --g2: #fd6585;
+  color: #fff;
+  border-radius: 999px;
+  font-weight: 600;
+  box-shadow: inset var(--z), 0 6px 14px 0 #fd658588, var(--z);
+}
+[data-era="3"] .ecard {
+  --g1: #161b22;
+  --g2: #161b22;
+  border-color: #30363d;
+  border-radius: 6px;
+  color: #c9d1d9;
+}
+[data-era="3"] .eav {
+  --g1: #30363d;
+  --g2: #30363d;
+  color: #c9d1d9;
+  border-radius: 6px;
+}
+[data-era="3"] .ebtn {
+  --g1: #238636;
+  --g2: #238636;
+  color: #fff;
+  border-radius: 6px;
+  border-color: #2ea043;
+  font-weight: 500;
+}
+[data-era="4"] .ecard {
+  --g1: #e0e5ec;
+  --g2: #e0e5ec;
+  border-radius: 26px;
+  box-shadow: inset var(--z), 9px 9px 18px 0 #a3b1c6, -9px -9px 18px 0 #fff;
+  color: #5b6b82;
+}
+[data-era="4"] .eav {
+  --g1: #e0e5ec;
+  --g2: #e0e5ec;
+  box-shadow: inset 4px 4px 8px 0 #a3b1c6, inset -4px -4px 8px 0 #fff, var(--z);
+  color: #5b6b82;
+}
+[data-era="4"] .ebtn {
+  --g1: #e0e5ec;
+  --g2: #e0e5ec;
+  color: #5b6b82;
+  border-radius: 14px;
+  box-shadow: inset var(--z), 5px 5px 10px 0 #a3b1c6, -5px -5px 10px 0 #fff;
+  font-weight: 600;
+}
+[data-era="5"] .ecard {
+  --g1: #ffffff2e;
+  --g2: #ffffff2e;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-color: #ffffff66;
+  border-radius: 20px;
+  color: #fff;
+  box-shadow: inset 0 1px 0 0 #ffffff55, 0 8px 32px 0 #1f26875e, var(--z);
+}
+[data-era="5"] .eav {
+  --g1: #ffffff40;
+  --g2: #ffffff40;
+  color: #fff;
+  border-color: #ffffff66;
+}
+[data-era="5"] .ebtn {
+  --g1: #ffffff40;
+  --g2: #ffffff40;
+  color: #fff;
+  border-color: #ffffff80;
+  border-radius: 12px;
+  font-weight: 600;
+}
+[data-era="6"] .ecard {
+  --g1: #0c0c12;
+  --g2: #0c0c12;
+  border-radius: 14px;
+  box-shadow: inset var(--z), 0 0 0 1px #7c3aed, 0 0 28px 0 #7c3aed88;
+  color: #e7e7ff;
+}
+[data-era="6"] .eav {
+  --ga: 135deg;
+  --g1: #00ffa3;
+  --g2: #dc1fff;
+  color: #0000;
+}
+[data-era="6"] .ebtn {
+  --ga: 90deg;
+  --g1: #00ffa3;
+  --g2: #dc1fff;
+  color: #050507;
+  border-radius: 10px;
+  font-weight: 700;
+}
+[data-era="7"] .ecard {
+  --g1: #fff;
+  --g2: #fff;
+  border-color: #ececf1;
+  border-radius: 20px;
+  box-shadow: inset var(--z), 0 1px 2px 0 #0000000d, 0 12px 32px 0 #a78bfa3d;
+  color: #1f1f28;
+}
+[data-era="7"] .eav {
+  --ga: 135deg;
+  --g1: #c4b5fd;
+  --g2: #f0abfc;
+  color: #0000;
+}
+[data-era="7"] .ebtn {
+  --ga: 90deg;
+  --g1: #8b5cf6;
+  --g2: #d946ef;
+  color: #fff;
+  border-radius: 999px;
+  font-weight: 500;
+}
+[data-era="8"] .ecard {
+  --g1: color-mix(in srgb, var(--bg) 78%, transparent);
+  --g2: color-mix(in srgb, var(--bg) 78%, transparent);
+  border-color: var(--line);
+  border-radius: 4px;
+  color: var(--fg);
+}
+[data-era="8"] .eav {
+  --g1: var(--gold);
+  --g2: var(--gold);
+  color: var(--on-gold);
+}
+[data-era="8"] .ebtn {
+  --g1: var(--gold);
+  --g2: var(--gold);
+  color: var(--on-gold);
+  border-radius: 999px;
+}
+/* type swaps at the middle of the dip, keyed on data-f */
+[data-f="0"] .ecard {
+  font-family: "Lucida Grande", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-shadow: 0 1px 0 #fff;
+}
+[data-f="0"] .eav,
+[data-f="0"] .ebtn {
+  text-shadow: 0 -1px 0 #0007;
+}
+[data-f="1"] .ecard {
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+[data-f="2"] .ecard {
+  font-family: -apple-system, "SF Pro Text", "Segoe UI", sans-serif;
+}
+[data-f="3"] .ecard {
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+[data-f="4"] .ecard {
+  font-family: Poppins, Nunito, system-ui, sans-serif;
+}
+[data-f="5"] .ecard {
+  font-family: system-ui, sans-serif;
+}
+[data-f="6"] .ecard {
+  font-family: var(--mono);
+}
+[data-f="7"] .ecard {
+  font-family: Inter, system-ui, sans-serif;
+}
+[data-f="8"] .ecard {
+  font-family: var(--sans);
+}
+[data-f="8"] .eid b {
+  font-family: var(--disp);
+  font-weight: 800;
+}
+[data-f="8"] .eav,
+[data-f="8"] .ebtn {
+  font-family: var(--mono);
+  font-size: 13px;
+}

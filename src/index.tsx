@@ -1,32 +1,9 @@
-import { Router } from '@solidjs/router';
-import { QueryClient, QueryClientProvider } from '@tanstack/solid-query';
-import { render } from 'solid-js/web';
-import './index.css';
+import { hydrate, render } from 'solid-js/web';
 import App from './App';
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-    },
-  },
-});
+import './index.css';
 
 const root = document.getElementById('root');
+if (!root) throw new Error('Root element not found');
 
-if (!root) {
-  throw new Error(
-    'Root element not found. Did you forget to add it to your index.html?',
-  );
-}
-
-render(
-  () => (
-    <Router>
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
-    </Router>
-  ),
-  root,
-);
+if (root.hasChildNodes()) hydrate(() => <App />, root);
+else render(() => <App />, root);

@@ -1,0 +1,77 @@
+#pal {
+  position: fixed;
+  inset: 0;
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
+  display: grid;
+  place-items: start center;
+  padding: 14vh 16px 0;
+  z-index: 50;
+}
+#pal .box {
+  width: min(520px, 100%);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px #0008;
+}
+#pq {
+  width: 100%;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--fg);
+  font: 15px var(--mono);
+  padding: 14px 16px;
+}
+#pq:focus-visible {
+  outline: 0;
+}
+#pl {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  max-height: 320px;
+  overflow: auto;
+  font: 13px var(--mono);
+}
+#pl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+#pl > div span {
+  color: var(--mute);
+}
+#pl > div[aria-selected="true"] {
+  background: var(--line);
+}
+#pl > div[aria-selected="true"] b {
+  color: var(--gold);
+}
+#pl b {
+  font-weight: 500;
+}
+.xray main * {
+  outline: 1px solid color-mix(in srgb, var(--ice) 55%, transparent);
+  outline-offset: -1px;
+}
+#xr {
+  position: fixed;
+  z-index: 40;
+  pointer-events: none;
+  font: 11px var(--mono);
+  background: var(--ice);
+  color: var(--bg);
+  padding: 3px 7px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}

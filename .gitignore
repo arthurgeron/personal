@@ -4,6 +4,7 @@ node_modules
 # output
 out
 dist
+.ssr
 *.tgz
 
 # code coverage
@@ -12,6 +13,7 @@ coverage
 
 # logs
 logs
+.playwright-mcp
 _.log
 report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 

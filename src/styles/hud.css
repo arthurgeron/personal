@@ -1,0 +1,115 @@
+#hud {
+  position: fixed;
+  z-index: 30;
+  top: calc(10px + env(safe-area-inset-top, 0px));
+  right: max(10px, env(safe-area-inset-right, 0px));
+  font: 12px var(--mono);
+  color: var(--fg);
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  width: min(270px, calc(100vw - 20px));
+}
+#hud.min {
+  width: auto;
+  border-radius: 999px;
+  transition: opacity .2s, visibility .2s;
+}
+#hud.away {
+  opacity: 0;
+  visibility: hidden;
+}
+#hud.min #hudb {
+  padding: 6px 11px;
+  gap: 5px;
+}
+#hud.min #fps {
+  font-size: 13px;
+}
+#hud.min #cnt {
+  display: none;
+}
+#hud.min #spark {
+  position: absolute;
+  visibility: hidden;
+}
+#hudb {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  width: 100%;
+}
+#hudb:focus-visible {
+  outline: 2px solid var(--ice);
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+#fps {
+  font-size: 18px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  min-width: 2.6ch;
+  color: var(--gold);
+}
+#spark {
+  flex: 1;
+  height: 22px;
+  min-width: 64px;
+  width: 64px;
+}
+#hudb span {
+  color: var(--mute);
+}
+#hudp {
+  padding: 8px 12px 12px;
+  display: grid;
+  gap: 8px;
+  border-top: 1px solid var(--line);
+}
+.hrow {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--mute);
+}
+.hrow b {
+  color: var(--fg);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+#pc {
+  width: 100%;
+  accent-color: var(--gold);
+  margin: 0;
+}
+#quip {
+  color: var(--gold);
+  min-height: 2.7em;
+  margin: 0;
+  line-height: 1.35;
+}
+.hbtns {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.hbtns button {
+  font: 11px var(--mono);
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--fg);
+  padding: 5px 9px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.hbtns button:hover,
+.hbtns button[aria-pressed="true"] {
+  border-color: var(--gold);
+  color: var(--gold);
+}

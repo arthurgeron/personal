@@ -5,42 +5,61 @@ import { rspack } from '@rspack/core';
 
 const targets = ['chrome >= 87', 'edge >= 88', 'firefox >= 78', 'safari >= 14'];
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const dev = process.env.NODE_ENV === 'development';
+const extensions = ['...', '.tsx', '.ts'];
 
-export default defineConfig({
+const typescript = {
+  test: /\.ts$/,
+  use: [
+    {
+      loader: 'builtin:swc-loader',
+      options: {
+        jsc: {
+          parser: {
+            syntax: 'typescript',
+          },
+        },
+        env: { targets },
+      },
+    },
+  ],
+};
+
+const solid = (options: object, plugins: string[] = []) => ({
+  test: /\.tsx$/,
+  use: [
+    {
+      loader: 'babel-loader',
+      options: {
+        babelrc: false,
+        presets: [
+          ['solid', options],
+          ['@babel/preset-typescript', { onlyRemoveTypeImports: true }],
+        ],
+        plugins,
+      },
+    },
+  ],
+});
+
+const client = defineConfig({
+  name: 'client',
   context: __dirname,
   entry: {
     main: './src/index.tsx',
   },
+  output: {
+    clean: true,
+  },
   resolve: {
-    extensions: ['...', '.tsx', '.ts', '.js', '.jsx'],
+    extensions,
+    // jsPDF imports these lazily for HTML and SVG rendering, which the CV does not use
+    alias: { html2canvas: false, dompurify: false, canvg: false },
   },
   module: {
     rules: [
       {
-        test: /\.svg$/,
-        type: 'asset',
-      },
-      {
-        test: /\.(png|jpe?g|gif|webp)$/i,
-        type: 'asset/resource',
-      },
-      {
-        test: /\.module\.css$/,
-        use: [
-          {
-            loader: 'postcss-loader',
-            options: {
-              postcssOptions: {
-                config: path.resolve(__dirname, './postcss.config.js'),
-              },
-            },
-          },
-        ],
-        type: 'css/module',
-      },
-      {
         test: /\.css$/,
-        exclude: /\.module\.css$/,
         use: [
           {
             loader: 'postcss-loader',
@@ -69,41 +88,13 @@ export default defineConfig({
           },
         ],
       },
-      {
-        test: /\.ts$/,
-        use: [
-          {
-            loader: 'builtin:swc-loader',
-            options: {
-              jsc: {
-                parser: {
-                  syntax: 'typescript',
-                },
-              },
-              env: { targets },
-            },
-          },
-        ],
-      },
-      {
-        test: /\.(j|t)sx$/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: ['solid'],
-              plugins: ['solid-refresh/babel'],
-            },
-          },
-        ],
-      },
+      typescript,
+      solid({ hydratable: true }, dev ? ['solid-refresh/babel'] : []),
     ],
   },
   plugins: [
-    new rspack.HtmlRspackPlugin({
-      template: './index.html',
-      title: 'Arthur Geron - Web3 & React Developer',
-    }),
+    new rspack.HtmlRspackPlugin({ template: './index.html' }),
+    new rspack.CopyRspackPlugin({ patterns: [{ from: 'public' }] }),
   ],
   optimization: {
     minimizer: [
@@ -118,10 +109,35 @@ export default defineConfig({
   },
   devServer: {
     port: 3030,
-    historyApiFallback: true,
     hot: true,
   },
   experiments: {
     css: true,
   },
 });
+
+// renders the page to a string at build time, which scripts/prerender.ts writes into dist/index.html
+const prerender = defineConfig({
+  name: 'prerender',
+  context: __dirname,
+  target: 'node',
+  entry: {
+    server: './src/entry-server.tsx',
+  },
+  output: {
+    path: path.resolve(__dirname, '.ssr'),
+    filename: '[name].cjs',
+    library: { type: 'commonjs2' },
+    clean: true,
+  },
+  resolve: { extensions },
+  externals: ['react', 'react-dom', 'react-dom/client', 'jspdf'],
+  module: {
+    rules: [typescript, solid({ generate: 'ssr', hydratable: true })],
+  },
+  optimization: {
+    minimize: false,
+  },
+});
+
+export default [client, prerender];

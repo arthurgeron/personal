@@ -1,0 +1,144 @@
+.tl {
+  list-style: none;
+  margin: 34px 0 0;
+  padding: 0;
+  position: relative;
+  border-top: 1px solid var(--line);
+}
+.tl::before,
+.tl::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--line);
+}
+.tl::after {
+  background: var(--gold);
+  transform-origin: 50% 0;
+}
+.tl li {
+  display: grid;
+  grid-template-columns: minmax(0, 150px) minmax(0, 1fr) auto;
+  gap: 6px 28px;
+  align-items: start;
+  padding: 22px 0 22px 26px;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+.tl li::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 29px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--gold);
+  z-index: 1;
+}
+.tl time {
+  font: 12px / 1.9 var(--mono);
+  color: var(--gold);
+  letter-spacing: .04em;
+}
+.tl h3 {
+  font: 800 clamp(1.2rem, 2.3vw, 1.7rem) / 1.1 var(--disp);
+  letter-spacing: -.02em;
+  margin: 0 0 6px;
+}
+.tl h3 small {
+  font: 400 14px var(--sans);
+  color: var(--mute);
+  letter-spacing: 0;
+  margin-left: 8px;
+}
+.tl p {
+  margin: 0;
+  color: var(--mute);
+  max-width: 60ch;
+}
+.tl .ev {
+  font: 12px / 1.9 var(--mono);
+  white-space: nowrap;
+}
+.story {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+  margin-top: 36px;
+}
+.story .era {
+  margin: 0;
+  position: sticky;
+  top: max(76px, calc(50vh - 260px));
+}
+.story .tl {
+  margin: 0;
+}
+.story .tl li {
+  grid-template-columns: minmax(0, 1fr);
+  cursor: pointer;
+  opacity: 0.45;
+  transition: opacity .4s;
+}
+.story .tl li.on,
+.contrast .story .tl li,
+html:not(.js) .story .tl li,
+html:not(.js) .heat button {
+  opacity: 1;
+}
+.tl li.on::before {
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--gold) 28%, transparent);
+}
+.tl .hl {
+  color: var(--fg);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.meas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px 24px;
+  margin-top: 14px;
+  max-width: 60ch;
+}
+.meas p {
+  font-size: 13.5px;
+  line-height: 1.45;
+  border-left: 2px solid var(--gold);
+  padding-left: 12px;
+}
+.meas b {
+  display: block;
+  font: 700 1.2rem / 1.3 var(--mono);
+  color: var(--gold);
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .tl li {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 80%;
+    }
+    .tl::after {
+      animation: drawline linear both;
+      animation-timeline: view();
+      animation-range: entry 15% cover 62%;
+    }
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+}
+@keyframes drawline {
+  from {
+    transform: scaleY(0);
+  }
+}

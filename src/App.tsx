@@ -1,48 +1,44 @@
-import { Route } from '@solidjs/router';
-import { Suspense, lazy, onCleanup, onMount } from 'solid-js';
-import type { ParentProps } from 'solid-js';
-import Layout from './components/layout/Layout';
-import { initThemeDetection } from './utils/theme';
+import { createEffect } from 'solid-js';
+import Contact from './components/Contact';
+import Hero from './components/Hero';
+import Hire from './components/Hire';
+import Hud from './components/Hud';
+import OpenSource from './components/OpenSource';
+import Palette from './components/Palette';
+import Shipped from './components/Shipped';
+import Sixty from './components/Sixty';
+import Web3 from './components/Web3';
+import Xray from './components/Xray';
+import Years from './components/Years';
+import { useEngine } from './utils/engine';
+import { contrast, still, xray } from './utils/session';
 
-// Lazy load pages
-const Home = lazy(() => import('./pages/Home'));
-const About = lazy(() => import('./pages/About'));
-const Projects = lazy(() => import('./pages/Projects'));
-const Contact = lazy(() => import('./pages/Contact'));
-const NotFound = lazy(() => import('./pages/NotFound'));
+const App = () => {
+  useEngine();
+  for (const [name, on] of Object.entries({ still, xray, contrast }))
+    createEffect(() => document.documentElement.classList.toggle(name, on()));
 
-// Root component that will be used as the layout for all routes
-const Root = (props: ParentProps) => {
   return (
-    <Layout>
-      <Suspense
-        fallback={
-          <div class="flex h-screen w-full items-center justify-center">
-            Loading...
-          </div>
-        }
-      >
-        {props.children}
-      </Suspense>
-    </Layout>
+    <>
+      <a class="skip" href="#main">
+        Skip to content
+      </a>
+      <canvas id="gl" aria-hidden="true" />
+      <Hud />
+      <main id="main" tabindex="-1">
+        <Hero />
+        <Shipped />
+        <Years />
+        <Sixty />
+        <OpenSource />
+        <Web3 />
+        <Hire />
+        <Contact />
+      </main>
+      <Palette />
+      <Xray />
+    </>
   );
 };
-
-function App() {
-  // Initialize theme detection
-  onMount(() => {
-    const cleanup = initThemeDetection();
-    onCleanup(cleanup);
-  });
-  return (
-    <Route path="/" component={Root}>
-      <Route path="/" component={Home} />
-      <Route path="/about" component={About} />
-      <Route path="/projects" component={Projects} />
-      <Route path="/contact" component={Contact} />
-      <Route path="*" component={NotFound} />
-    </Route>
-  );
-}
 
 export default App;

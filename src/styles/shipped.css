@@ -1,0 +1,100 @@
+/* shipped with: two rows rolling in opposite directions, paused on hover */
+.ship {
+  padding-block: clamp(40px, 7vh, 88px) clamp(20px, 3vh, 40px);
+}
+.ship-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 20px 56px;
+  align-items: end;
+}
+.ship-head h2 {
+  margin: 0 0 14px;
+}
+.big {
+  font: 800 clamp(4.5rem, 11vw, 8rem) / 0.85 var(--disp);
+  letter-spacing: -.05em;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.big + p {
+  font: 13px var(--mono);
+  color: var(--mute);
+  margin: 10px 0 0;
+}
+.mq {
+  display: flex;
+  overflow: hidden;
+  margin-top: 12px;
+  -webkit-mask: linear-gradient(90deg, #0000, #000 12%, #000 88%, #0000);
+  mask: linear-gradient(90deg, #0000, #000 12%, #000 88%, #0000);
+}
+.mql {
+  font: 12px var(--mono);
+  color: var(--mute);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-top: 26px;
+  margin-bottom: 0;
+}
+.ship-head + .mql {
+  margin-top: clamp(28px, 5vh, 56px);
+}
+.mq div {
+  display: flex;
+  flex: none;
+  gap: 12px;
+  padding-right: 12px;
+  animation: mq var(--d, 52s) linear infinite;
+}
+.mq.rev div {
+  animation-direction: reverse;
+  --d: 64s;
+}
+.mq:hover div {
+  animation-play-state: paused;
+}
+.mq p {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 76px;
+  margin: 0;
+  padding: 0 26px 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--panel) 82%, transparent);
+  white-space: nowrap;
+}
+.mq i {
+  font: 600 13px var(--mono);
+  font-style: normal;
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  background: var(--line);
+  color: var(--gold);
+}
+html.light .mq i {
+  color: color-mix(in srgb, var(--gold) 70%, #000);
+}
+.mq.rev p {
+  padding-left: 24px;
+}
+.mq b {
+  display: block;
+  font: 700 17px / 1.25 var(--disp);
+  letter-spacing: -.01em;
+}
+.mq small {
+  display: block;
+  font: 12px var(--mono);
+  color: var(--mute);
+}
+@keyframes mq {
+  to {
+    transform: translateX(-100%);
+  }
+}

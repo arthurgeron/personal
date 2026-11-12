@@ -1,52 +1,40 @@
-import { createSignal, createEffect } from 'solid-js';
+import { engine, light, readSkin, remember, setLight, still } from './session';
 
-// Create a globally accessible theme signal that can be imported by any component
-export const [isDarkMode, setIsDarkMode] = createSignal(false);
+const REVEAL_MS = 650;
 
-// Initialize theme detection
-export function initThemeDetection() {
-  // Initial detection
-  setIsDarkMode(document.documentElement.getAttribute('data-theme') === 'dark');
-  
-  // Set up observer for theme changes
-  const observer = new MutationObserver(() => {
-    setIsDarkMode(document.documentElement.getAttribute('data-theme') === 'dark');
-  });
-  
-  observer.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['data-theme']
-  });
-  
-  return () => observer.disconnect();
+const apply = () => {
+  setLight(!light());
+  document.documentElement.classList.toggle('light', light());
+  remember('theme', light() ? 'light' : 'dark');
+  readSkin();
+  engine.glyphs?.draw(performance.now());
+};
+
+export function toggleTheme(x: number, y: number) {
+  if (!document.startViewTransition || still()) {
+    apply();
+    return;
+  }
+  const radius = Math.hypot(
+    Math.max(x, innerWidth - x),
+    Math.max(y, innerHeight - y),
+  );
+  document
+    .startViewTransition(apply)
+    .ready.then(() =>
+      document.documentElement.animate(
+        {
+          clipPath: [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${radius}px at ${x}px ${y}px)`,
+          ],
+        },
+        {
+          duration: REVEAL_MS,
+          easing: 'cubic-bezier(.4,0,.2,1)',
+          pseudoElement: '::view-transition-new(root)',
+        },
+      ),
+    )
+    .catch(() => {});
 }
-
-// Hook for components to use dark mode detection
-export function createThemeDetection() {
-  createEffect(initThemeDetection);
-  return isDarkMode;
-}
-
-// Get theme-specific colors for various UI elements
-export function getThemeColors() {
-  return {
-    particle: isDarkMode() 
-      ? 'rgba(255, 255, 255, $opacity)'
-      : 'rgba(16, 185, 129, $opacity)',
-    connection: isDarkMode()
-      ? 'rgba(255, 255, 255, $opacity)'
-      : 'rgba(16, 185, 129, $opacity)',
-    background: isDarkMode()
-      ? 'bg-gray-900'
-      : 'bg-base-100',
-    text: isDarkMode()
-      ? 'text-gray-300'
-      : 'text-neutral',
-    headerBg: isDarkMode()
-      ? 'bg-gray-900/90'
-      : 'bg-base-100/90',
-    cardBg: isDarkMode()
-      ? 'bg-gray-800'
-      : 'bg-base-100',
-  };
-} 

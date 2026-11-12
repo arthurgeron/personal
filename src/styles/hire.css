@@ -1,0 +1,29 @@
+.when {
+  list-style: none;
+  margin: 30px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.when li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 24px;
+  align-items: baseline;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+  transition: padding-left .3s, color .3s;
+}
+.when li:hover {
+  padding-left: 14px;
+  color: var(--gold);
+}
+.when b {
+  font: 700 clamp(1.25rem, 2.8vw, 2rem) / 1.15 var(--disp);
+  letter-spacing: -.02em;
+}
+.when span {
+  font: 12px var(--mono);
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}

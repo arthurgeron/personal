@@ -1,73 +1,28 @@
-# Arthur Geron Portfolio Website
+# arthurgeron.com
 
-A modern, animated personal portfolio website built with SolidJS, Rspack, and Bun.
+Arthur Geron's consulting site: a single prerendered page built with SolidJS, Rspack and Bun.
 
-## Features
+## How it works
 
-- Modern design with subtle animations
-- Interactive particle background
-- Dark/light mode support
-- Responsive for all devices
-- Fast performance with SolidJS
-- Optimized builds with Rspack
-
-## Technologies Used
-
-- SolidJS
-- Rspack
-- Bun
-- TypeScript
-- TailwindCSS
-- DaisyUI
-- GSAP for animations
-- Motion One
+- `src/components` holds one component per section. `src/constants` holds the copy, `src/styles` one stylesheet per section, `src/utils` the imperative parts (the WebGL2 code rain in `glyphs.ts`, the frame loop, the React 18 render demo).
+- `bun run build` bundles the client, then `scripts/prerender.ts` renders the page to static HTML in `dist/index.html` and the client hydrates it. The page reads without JavaScript.
+- `src/data/stats.json` is a committed snapshot of the GitHub and npm figures. `bun run stats` refreshes it from the public GitHub profile, the GitHub search API (`GH_TOKEN`) and npm. A source that fails keeps its previous value.
+- The deploy workflow runs on every push to `main` and once a day. It refreshes the stats, builds and uploads `dist` over FTP. The workflow only holds the repository's own read-only token, so it sees public work. The merged pull request total that includes private repositories comes from the committed snapshot and never shrinks. To raise it, run `GH_TOKEN=$(gh auth token) bun run stats` locally and commit the result.
+- "Download CV" builds an ATS-friendly PDF in the browser with jsPDF from the same constants, with no e-mail address or phone number.
 
 ## Development
 
-### Setup
-
 ```bash
-# Install dependencies
 bun install
-
-# Start development server
-bun run dev
+bun run dev      # development server
+bun run build    # production build and prerender into dist
+bun run stats    # refresh src/data/stats.json, needs GH_TOKEN
+bun run check    # Biome lint and format
 ```
 
-### Building
+## Accessibility
 
-```bash
-# Build for production
-bun run build
-```
-
-### Linting & Formatting
-
-```bash
-# Check code
-bun run check
-
-# Format code
-bun run format
-```
-
-## Project Structure
-
-```
-src/
-├── components/             # Reusable components
-│   ├── layout/             # Layout components
-│   ├── home/               # Home page components
-│   ├── shared/             # Shared components
-│   └── portfolio/          # Portfolio components
-├── pages/                  # Page components
-├── assets/                 # Static assets
-├── utils/                  # Utility functions
-├── data/                   # Data files
-├── App.tsx                 # Main app component
-├── index.tsx               # Entry point
-└── index.css               # Global styles
-```
+Keyboard access for every control, a skip link, a "Pause" control that also follows `prefers-reduced-motion`, and a "Contrast" control that also follows `prefers-contrast: more`.
 
 ## License
 

@@ -3,8 +3,14 @@ name: Deploy to Production
 on:
   push:
     branches: [main]
+  # the scheduled run rebuilds the site with fresh GitHub and npm figures
+  schedule:
+    - cron: '17 5 * * *'
+  workflow_dispatch:
 
-# Add concurrency to ensure only one deployment runs at a time
+permissions:
+  contents: read
+
 concurrency:
   group: production-deploy-${{ github.ref }}
   cancel-in-progress: true
@@ -18,7 +24,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: main # Ensure we're getting the latest code from main
+          ref: main
 
       - name: Get Bun version from .tool-versions
         id: get-bun-version
@@ -42,7 +48,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
           restore-keys: ${{ runner.os }}-bun-
 
       - name: Cache build
@@ -58,16 +64,15 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Refresh GitHub and npm stats
+        continue-on-error: true
+        run: bun run stats
+        env:
+          GH_TOKEN: ${{ github.token }}
+
       - name: Build
         run: bun run build
         
-      - name: Copy public assets to dist
-        run: |
-          echo "Copying public folder content to dist directory"
-          cp -r public/* dist/
-          echo "Listing dist directory content after copy:"
-          ls -la dist/
-
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -78,6 +83,6 @@ jobs:
           protocol: ftp
           local-dir: ./dist/
           server-dir: /public_html/
-          dangerous-clean-slate: true
+          dangerous-clean-slate: ${{ github.event_name == 'push' }}
           timeout: 120000
           log-level: verbose 

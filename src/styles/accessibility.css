@@ -1,0 +1,103 @@
+body {
+  margin: 0;
+}
+[hidden] {
+  display: none !important;
+}
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.skip {
+  position: fixed;
+  z-index: 60;
+  top: 10px;
+  left: 10px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--on-gold);
+  font: 500 13px var(--mono);
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+.skip:focus {
+  transform: none;
+}
+main:focus {
+  outline: 0;
+}
+h2.tight {
+  margin-top: 12px;
+}
+.cv {
+  all: unset;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.cv:hover {
+  color: var(--gold);
+}
+.cv:focus-visible {
+  outline: 2px solid var(--ice);
+  outline-offset: 3px;
+}
+html.js:not(.ready) [data-n],
+html.js:not(.ready) #hud {
+  visibility: hidden;
+}
+html:not(.js) #hud {
+  display: none;
+}
+dialog#pal {
+  border: 0;
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  color: inherit;
+}
+dialog#pal:not([open]) {
+  display: none;
+}
+dialog#pal::backdrop {
+  background: none;
+}
+.still .tl li,
+.still .tl::after {
+  animation: none;
+}
+.still .ebg i,
+.still .ebg i::before,
+.still .ebg i::after,
+.still .code ins,
+.still .code .new {
+  animation: none !important;
+}
+.still .ebg i:nth-child(1)::before {
+  display: none;
+}
+.still .ebg i:nth-child(2)::before,
+.still .ebg i:nth-child(2)::after {
+  transform: scale(0.6);
+}
+.still .when li,
+.still .up a,
+.still .heat button {
+  transition: none;
+}
+.still .heat.in button {
+  animation: none;
+}
+.still .mq div {
+  animation: none;
+}
+.still .mq {
+  overflow-x: auto;
+}

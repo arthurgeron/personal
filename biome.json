@@ -8,6 +8,9 @@
     "clientKind": "git",
     "useIgnoreFile": true
   },
+  "files": {
+    "ignore": ["src/data"]
+  },
   "formatter": {
     "indentStyle": "space"
   },
@@ -16,17 +19,16 @@
       "quoteStyle": "single"
     }
   },
-  "css": {
-    "parser": {
-      "cssModules": true
-    }
-  },
   "linter": {
     "enabled": true,
     "rules": {
       "recommended": true,
       "correctness": {
         "useJsxKeyInIterable": "off"
+      },
+      "a11y": {
+        "noAriaHiddenOnFocusable": "off",
+        "useSemanticElements": "off"
       }
     }
   }

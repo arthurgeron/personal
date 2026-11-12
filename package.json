@@ -4,40 +4,34 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "cross-env NODE_ENV=production bun rspack build",
+    "build": "cross-env NODE_ENV=production bun rspack build && bun scripts/prerender.ts",
     "check": "biome check --write",
-    "dev": "cross-env NODE_ENV=development bun rspack serve",
-    "format": "biome format --write"
+    "dev": "cross-env NODE_ENV=development bun rspack serve --configName client",
+    "format": "biome format --write",
+    "stats": "bun scripts/fetch-stats.ts"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.27.0",
     "@biomejs/biome": "^1.9.4",
     "@rspack/cli": "^1.2.8",
     "@rspack/core": "^1.2.8",
-    "@tailwindcss/nesting": "^0.0.0-insiders.565cd3e",
     "@types/bun": "latest",
+    "@types/react": "18",
+    "@types/react-dom": "18",
     "autoprefixer": "^10.4.21",
     "babel-loader": "^10.0.0",
     "babel-preset-solid": "^1.9.5",
     "cross-env": "^7.0.3",
-    "daisyui": "^5.0.9",
     "postcss": "^8.4.35",
     "postcss-loader": "^8.1.1",
     "solid-refresh": "^0.7.5",
-    "tailwindcss": "^3.4.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
   },
-  "peerDependencies": {
-    "typescript": "^5.8.2"
-  },
   "dependencies": {
-    "@motionone/solid": "^10.16.4",
-    "@solidjs/router": "^0.15.3",
-    "@tanstack/solid-query": "^5.69.0",
-    "gsap": "^3.12.7",
-    "solid-js": "^1.9.5",
-    "solid-motionone": "^1.0.3",
-    "split-type": "^0.3.4"
+    "jspdf": "^4.2.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "solid-js": "^1.9.5"
   }
 }

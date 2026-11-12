@@ -1,0 +1,113 @@
+@media (max-width: 820px) {
+  .topnav {
+    padding: 44px 0 20px;
+  }
+  #s0 {
+    aspect-ratio: 1.9 / 1;
+  }
+  .hero-foot,
+  .duo,
+  .duo2,
+  .fin,
+  .demo,
+  .oss,
+  .ship-head {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .mq p {
+    height: 64px;
+  }
+  .proof,
+  .kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .duo2 #s3 {
+    order: -1;
+  }
+  .when li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .tl li {
+    grid-template-columns: minmax(0, 1fr);
+    padding-left: 22px;
+  }
+  .receipt {
+    justify-self: center;
+  }
+  .story {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+  .story .era {
+    top: 58px;
+    z-index: 3;
+    background: var(--bg);
+    box-shadow: 0 -58px 0 var(--bg);
+  }
+  .estage {
+    min-height: 0;
+    height: 172px;
+    padding: 12px;
+  }
+  .ecard {
+    padding: 12px 14px;
+    gap: 10px 12px;
+  }
+  .eyear {
+    font-size: 3.4rem;
+  }
+  .ectl {
+    padding: 8px 12px;
+  }
+  .eticks,
+  .eq small {
+    display: none;
+  }
+  .eq {
+    font-size: 13px;
+    min-height: 0;
+    height: 2.7em;
+    overflow: hidden;
+  }
+  .calscroll > * {
+    min-width: 720px;
+  }
+  .dayp {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    height: 330px;
+  }
+  .dnav {
+    margin-top: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ebg i,
+  .ebg i::before,
+  .ebg i::after,
+  .code ins,
+  .code .new {
+    animation: none !important;
+  }
+  .ebg i:nth-child(1)::before {
+    display: none;
+  }
+  .ebg i:nth-child(2)::before,
+  .ebg i:nth-child(2)::after {
+    transform: scale(0.6);
+  }
+  .when li,
+  .up a,
+  .heat button {
+    transition: none;
+  }
+  .heat.in button {
+    animation: none;
+  }
+  .mq div {
+    animation: none;
+  }
+  .mq {
+    overflow-x: auto;
+  }
+}

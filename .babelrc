@@ -1,7 +1,0 @@
-{
-  "presets": [
-    "solid",
-    ["@babel/preset-typescript", { "onlyRemoveTypeImports": true }]
-  ],
-  "plugins": ["solid-refresh/babel"]
-}

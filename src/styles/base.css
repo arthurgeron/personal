@@ -1,0 +1,235 @@
+/* layout: one fixed, opaque particle canvas behind the page. each act owns an empty slot the particles assemble into, and one working demo */
+@property --g1 {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #0000;
+}
+@property --g2 {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #0000;
+}
+@property --ga {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 180deg;
+}
+:root {
+  --bg: #0d0a08;
+  --panel: #17110d;
+  --fg: #f3e9d8;
+  --mute: #a89a86;
+  --line: #3a2e23;
+  --gold: #f2b84b;
+  --ember: #ff8a3c;
+  --ice: #8fd3ff;
+  --on-gold: #1a1206;
+  --disp: "Geist", system-ui, sans-serif;
+  --sans: "Geist", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+html.light {
+  --bg: #eef0f2;
+  --panel: #e2e5ea;
+  --fg: #15171c;
+  --mute: #59606b;
+  --line: #c3c9d2;
+  --gold: #925400;
+  --ember: #b33b0a;
+  --ice: #0b62c4;
+  --on-gold: #fff;
+  color-scheme: light;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 17px / 1.6 var(--sans);
+  overflow-x: clip;
+}
+#gl {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+main {
+  position: relative;
+  z-index: 1;
+}
+.wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+a {
+  color: inherit;
+  text-underline-offset: 3px;
+}
+:focus-visible {
+  outline: 2px solid var(--ice);
+  outline-offset: 3px;
+}
+.eyebrow {
+  font: 500 12px var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin: 0;
+}
+.slot {
+  display: block;
+  margin: 0;
+  font: 800 1px var(--disp);
+  color: transparent;
+  user-select: none;
+  overflow: hidden;
+}
+html:not(.js) .slot,
+.nogl .slot {
+  color: var(--gold);
+  font-size: clamp(2.6rem, 11vw, 8rem);
+  line-height: 0.95;
+  height: auto;
+  aspect-ratio: auto;
+  width: auto;
+  letter-spacing: -.03em;
+}
+html:not(.js) #s3,
+.nogl #s3 {
+  display: none;
+}
+
+.hero {
+  min-height: min(90vh, 770px);
+  display: flex;
+  flex-direction: column;
+  padding-block: 22px 28px;
+}
+.topnav {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  font: 13px var(--mono);
+  margin-bottom: auto;
+  padding: 0 290px 20px 0;
+}
+.topnav a {
+  text-decoration: none;
+  color: var(--mute);
+}
+.topnav a:hover {
+  color: var(--gold);
+}
+.topnav b {
+  font-weight: 600;
+}
+#s0 {
+  aspect-ratio: 6.4 / 1;
+  width: 100%;
+  margin-block: 8px 4px;
+}
+.hero-foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 20px 56px;
+  margin: clamp(14px, 3vh, 30px) 0 auto;
+  align-items: start;
+}
+.lead {
+  font: 700 clamp(1.5rem, 3vw, 2.3rem) / 1.1 var(--disp);
+  letter-spacing: -.02em;
+  margin: 0;
+  text-wrap: balance;
+}
+.lead em {
+  color: var(--gold);
+  font-style: normal;
+}
+.note {
+  color: var(--mute);
+  margin: 0;
+  max-width: 46ch;
+}
+.note b {
+  color: var(--fg);
+  font: 500 .95em var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+.hint {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  font: 12px var(--mono);
+  color: var(--mute);
+}
+.hint span {
+  border: 1px solid var(--line);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+.proof {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin: clamp(22px, 4vh, 40px) 0 0;
+  border-top: 1px solid var(--line);
+}
+.proof div {
+  padding: 14px 16px 0 0;
+  display: grid;
+  gap: 2px;
+}
+.proof dt {
+  order: 2;
+  font-size: 13.5px;
+  line-height: 1.35;
+  color: var(--mute);
+  max-width: 24ch;
+}
+.proof dd {
+  margin: 0;
+  font: 800 clamp(1.5rem, 3.2vw, 2.5rem) / 1 var(--disp);
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--gold);
+}
+
+.act {
+  padding-block: clamp(56px, 9vh, 112px);
+}
+.duo {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 16px clamp(24px, 5vw, 72px);
+  align-items: center;
+}
+.num {
+  width: clamp(150px, 30vw, 400px);
+  aspect-ratio: 1.3 / 1;
+}
+.num.w3 {
+  width: clamp(230px, 44vw, 560px);
+  aspect-ratio: 3.6 / 1;
+}
+h2 {
+  font: 800 clamp(1.9rem, 4.6vw, 3.7rem) / 1 var(--disp);
+  letter-spacing: -.03em;
+  margin: 0 0 16px;
+  text-wrap: balance;
+}
+.body {
+  color: var(--mute);
+  max-width: 58ch;
+  margin: 0;
+}
+.body a {
+  color: var(--fg);
+}
